@@ -27,7 +27,7 @@ public final class BCItems {
 
     // The iconic wrench, used to rotate and configure machines.
     public static final RegistryObject<Item> WRENCH =
-            ITEMS.register("wrench", () -> new Item(new Item.Properties().stacksTo(1)));
+            ITEMS.register("wrench", () -> new buildcraft.core.item.ItemWrench(new Item.Properties().stacksTo(1)));
 
     // Misc crafting components.
     public static final RegistryObject<Item> DIAMOND_SHARD = simple("diamond_shard");
@@ -37,7 +37,8 @@ public final class BCItems {
             ITEMS.register("template", () -> new Item(new Item.Properties().stacksTo(1)));
 
     // Robotics: robot and programming boards.
-    public static final RegistryObject<Item> ROBOT = simple("robot");
+    public static final RegistryObject<Item> ROBOT =
+            ITEMS.register("robot", () -> new buildcraft.robotics.item.ItemRobot(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> BOARD_BLANK = simple("board_blank");
     public static final RegistryObject<Item> BOARD_RED = simple("board_red");
     public static final RegistryObject<Item> BOARD_GREEN = simple("board_green");

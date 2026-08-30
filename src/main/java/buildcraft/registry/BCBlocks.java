@@ -22,6 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
 import buildcraft.builders.block.BlockBuilderMachine;
+import buildcraft.builders.block.BlockLibrary;
 import buildcraft.builders.block.BlockMarker;
 import buildcraft.builders.block.BlockQuarry;
 import buildcraft.builders.tile.TileArchitect;
@@ -30,25 +31,37 @@ import buildcraft.builders.tile.TileFiller;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.silicon.block.BlockAssemblyTable;
 import buildcraft.silicon.block.BlockLaser;
+import buildcraft.silicon.block.BlockSiliconTable;
 import buildcraft.silicon.tile.TileAssemblyTable;
+import buildcraft.silicon.tile.TileIntegrationTable;
+import buildcraft.silicon.tile.TileProgrammingTable;
 import buildcraft.energy.block.BlockEngine;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
+import buildcraft.factory.block.BlockAutoWorkbench;
 import buildcraft.factory.block.BlockMachine;
 import buildcraft.factory.block.BlockRefinery;
 import buildcraft.factory.block.BlockTank;
+import buildcraft.factory.tile.TileAutoWorkbench;
+import buildcraft.factory.tile.TileChute;
+import buildcraft.factory.tile.TileDistiller;
+import buildcraft.factory.tile.TileFloodgate;
+import buildcraft.factory.tile.TileHeatExchanger;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
 import buildcraft.robotics.block.BlockRobotStation;
 import buildcraft.robotics.tile.TileRobotStation;
+import buildcraft.transport.block.BlockGate;
 import buildcraft.transport.block.BlockPipe;
 import buildcraft.transport.tile.TileFluidPipe;
 import buildcraft.transport.tile.TileFluidPipeWood;
 import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeObsidian;
+import buildcraft.transport.tile.TilePipeVoid;
 import buildcraft.transport.tile.TilePipeWood;
 import buildcraft.transport.tile.TilePowerPipe;
 
@@ -87,6 +100,26 @@ public final class BCBlocks {
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
             () -> BCBlockEntities.REFINERY.get(), TileRefinery::new));
 
+    public static final RegistryObject<Block> DISTILLER = register("distiller", () -> new BlockRefinery(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.DISTILLER.get(), TileDistiller::new));
+
+    public static final RegistryObject<Block> FLOODGATE = register("floodgate", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.FLOODGATE.get(), TileFloodgate::new));
+
+    public static final RegistryObject<Block> HEAT_EXCHANGER = register("heat_exchanger", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.HEAT_EXCHANGER.get(), TileHeatExchanger::new));
+
+    public static final RegistryObject<Block> CHUTE = register("chute", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.CHUTE.get(), TileChute::new));
+
+    public static final RegistryObject<Block> AUTO_WORKBENCH = register("auto_workbench", () -> new BlockAutoWorkbench(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD),
+            () -> BCBlockEntities.AUTO_WORKBENCH.get(), TileAutoWorkbench::new));
+
     // --- Builders -----------------------------------------------------------
 
     public static final RegistryObject<Block> QUARRY = register("quarry", () -> new BlockQuarry(
@@ -108,6 +141,9 @@ public final class BCBlocks {
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.5F).noOcclusion()
                     .sound(SoundType.STONE)));
 
+    public static final RegistryObject<Block> LIBRARY = register("library", () -> new BlockLibrary(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
+
     // --- Silicon ------------------------------------------------------------
 
     public static final RegistryObject<Block> ASSEMBLY_TABLE = register("assembly_table",
@@ -117,6 +153,16 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> LASER = register("laser", () -> new BlockLaser(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> INTEGRATION_TABLE = register("integration_table",
+            () -> new BlockSiliconTable<>(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+                    () -> BCBlockEntities.INTEGRATION_TABLE.get(), TileIntegrationTable::new));
+
+    public static final RegistryObject<Block> PROGRAMMING_TABLE = register("programming_table",
+            () -> new BlockSiliconTable<>(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+                    () -> BCBlockEntities.PROGRAMMING_TABLE.get(), TileProgrammingTable::new));
 
     // --- Robotics -----------------------------------------------------------
 
@@ -151,6 +197,14 @@ public final class BCBlocks {
             (pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4),
             () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
 
+    public static final RegistryObject<Block> PIPE_OBSIDIAN = registerPipe("pipe_obsidian",
+            () -> BCBlockEntities.PIPE_OBSIDIAN.get(), TilePipeObsidian::new,
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
+    public static final RegistryObject<Block> PIPE_VOID = registerPipe("pipe_void",
+            () -> BCBlockEntities.PIPE_VOID.get(), TilePipeVoid::new,
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
     // Fluid pipes.
     public static final RegistryObject<Block> PIPE_FLUID_WOOD = registerPipe("pipe_fluid_wood",
             () -> BCBlockEntities.PIPE_FLUID_WOOD.get(), TileFluidPipeWood::new,
@@ -171,6 +225,9 @@ public final class BCBlocks {
             () -> BCBlockEntities.PIPE_POWER_COBBLESTONE.get(),
             (pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_COBBLESTONE.get(), pos, state),
             () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ENERGY, "power");
+
+    public static final RegistryObject<Block> GATE = register("gate", () -> new BlockGate(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F).sound(SoundType.METAL)));
 
     private static <T extends net.minecraft.world.level.block.entity.BlockEntity> RegistryObject<Block> registerPipe(
             String name,

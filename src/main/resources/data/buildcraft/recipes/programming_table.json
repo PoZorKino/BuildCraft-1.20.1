@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["rCr","gGg","ttt"], "key": { "r": { "item": "minecraft:redstone" }, "C": { "item": "buildcraft:chipset_redstone" }, "g": { "item": "buildcraft:gear_gold" }, "G": { "item": "buildcraft:gear_iron" }, "t": { "item": "minecraft:smooth_stone" } }, "result": { "item": "buildcraft:programming_table" } }

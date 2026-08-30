@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -52,7 +53,11 @@ public class TileRefinery extends BlockEntity implements ITickingMachine {
     private int progress;
 
     public TileRefinery(BlockPos pos, BlockState state) {
-        super(BCBlockEntities.REFINERY.get(), pos, state);
+        this(BCBlockEntities.REFINERY.get(), pos, state);
+    }
+
+    protected TileRefinery(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
     }
 
     @Override

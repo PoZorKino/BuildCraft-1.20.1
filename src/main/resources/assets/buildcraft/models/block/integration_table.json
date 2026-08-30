@@ -1,0 +1,9 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "buildcraft:block/integration_table_top",
+        "bottom": "buildcraft:block/integration_table_bottom",
+        "side": "buildcraft:block/integration_table_side",
+        "particle": "buildcraft:block/integration_table_side"
+    }
+}

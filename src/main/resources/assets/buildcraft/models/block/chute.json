@@ -1,0 +1,9 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "buildcraft:block/chute_top",
+        "bottom": "buildcraft:block/chute_bottom",
+        "side": "buildcraft:block/chute_side",
+        "particle": "buildcraft:block/chute_side"
+    }
+}

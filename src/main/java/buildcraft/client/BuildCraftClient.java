@@ -31,7 +31,25 @@ public final class BuildCraftClient {
             modBus.addListener(BuildCraftClient::onClientSetup);
             modBus.addListener(BuildCraftClient::registerBlockColors);
             modBus.addListener(BuildCraftClient::registerItemColors);
+            modBus.addListener(BuildCraftClient::registerRenderers);
         }
+    }
+
+    private static void registerRenderers(net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_WOOD.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_COBBLESTONE.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_STONE.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_GOLD.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_OBSIDIAN.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
+                buildcraft.silicon.client.LaserRenderer::new);
+        event.registerEntityRenderer(buildcraft.registry.BCEntities.ROBOT.get(),
+                buildcraft.robotics.client.RobotRenderer::new);
     }
 
     private static Block[] engines() {
@@ -48,6 +66,12 @@ public final class BuildCraftClient {
             MenuScreens.register(BCMenuTypes.ENGINE.get(), EngineScreen::new);
             MenuScreens.register(BCMenuTypes.ASSEMBLY_TABLE.get(),
                     buildcraft.silicon.client.AssemblyScreen::new);
+            MenuScreens.register(BCMenuTypes.AUTO_WORKBENCH.get(),
+                    buildcraft.factory.client.AutoWorkbenchScreen::new);
+            MenuScreens.register(BCMenuTypes.INTEGRATION_TABLE.get(),
+                    buildcraft.silicon.client.SiliconTableScreen::new);
+            MenuScreens.register(BCMenuTypes.PROGRAMMING_TABLE.get(),
+                    buildcraft.silicon.client.SiliconTableScreen::new);
             net.minecraft.client.renderer.item.ItemProperties.register(
                     buildcraft.registry.BCItems.TEMPLATE.get(),
                     new net.minecraft.resources.ResourceLocation(buildcraft.BuildCraft.MOD_ID, "used"),

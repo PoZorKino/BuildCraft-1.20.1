@@ -1,0 +1,9 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "buildcraft:block/floodgate_top",
+        "bottom": "buildcraft:block/floodgate_top",
+        "side": "buildcraft:block/floodgate_side",
+        "particle": "buildcraft:block/floodgate_side"
+    }
+}

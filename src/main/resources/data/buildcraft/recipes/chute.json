@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["I I","IhI"," g "], "key": { "I": { "item": "minecraft:iron_ingot" }, "h": { "item": "minecraft:hopper" }, "g": { "item": "buildcraft:gear_iron" } }, "result": { "item": "buildcraft:chute" } }

@@ -64,8 +64,9 @@ sourceSets {
             srcDirs = ['src/main/resources', 'src/generated/resources']
         }
     }
+    // Port-specific tests live under src/porttest to avoid picking up the legacy 1.12.2 tests.
     test {
-        java { srcDirs = [] }
+        java { srcDirs = ['src/porttest/java'] }
         resources { srcDirs = [] }
     }
 }
@@ -76,6 +77,14 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
 }
 
 tasks.named('processResources', ProcessResources).configure {

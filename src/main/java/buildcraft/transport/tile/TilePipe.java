@@ -79,7 +79,6 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
             return;
         }
         Iterator<TravelingItem> it = items.iterator();
-        List<TravelingItem> reAdd = new ArrayList<>();
         boolean changed = false;
         while (it.hasNext()) {
             TravelingItem ti = it.next();
@@ -97,6 +96,19 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         if (changed) {
             setChanged();
         }
+        // Keep clients in sync so the travelling items animate inside the pipe.
+        if (!items.isEmpty() || changed) {
+            level.sendBlockUpdated(pos, state, state, 3);
+        }
+    }
+
+    /** Read-only view of the items currently travelling through this pipe (used by the renderer). */
+    public List<TravelingItem> getTravelingItems() {
+        return items;
+    }
+
+    public int getTransitTicks() {
+        return transitTicks;
     }
 
     private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
@@ -158,7 +170,7 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         for (TravelingItem ti : items) {
             CompoundTag entry = new CompoundTag();
             entry.put("stack", ti.stack.save(new CompoundTag()));
-            entry.putInt("from", ti.from.get3DDataValue());
+            entry.put("from", buildcraft.lib.nbt.NBTUtilBC.writeDirection(ti.from));
             entry.putInt("age", ti.age);
             list.add(entry);
         }
@@ -173,8 +185,38 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
             ItemStack stack = ItemStack.of(entry.getCompound("stack"));
-            Direction from = Direction.from3DDataValue(entry.getInt("from"));
+            Direction from = buildcraft.lib.nbt.NBTUtilBC.readDirection(entry.get("from"));
+            if (from == null) {
+                from = Direction.DOWN;
+            }
             items.add(new TravelingItem(stack, from, entry.getInt("age")));
+        }
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Nullable
+    @Override
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection net,
+            net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
         }
     }
 

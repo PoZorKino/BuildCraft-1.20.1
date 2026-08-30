@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": [" r ","rCr"," i "], "key": { "r": { "item": "minecraft:redstone" }, "C": { "item": "buildcraft:chipset_iron" }, "i": { "item": "minecraft:iron_ingot" } }, "result": { "item": "buildcraft:gate" } }
