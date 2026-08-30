@@ -31,7 +31,21 @@ public final class BuildCraftClient {
             modBus.addListener(BuildCraftClient::onClientSetup);
             modBus.addListener(BuildCraftClient::registerBlockColors);
             modBus.addListener(BuildCraftClient::registerItemColors);
+            modBus.addListener(BuildCraftClient::registerRenderers);
         }
+    }
+
+    private static void registerRenderers(net.minecraftforge.client.event.EntityRenderersEvent.RegisterRenderers event) {
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_WOOD.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_COBBLESTONE.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_STONE.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_GOLD.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
+                buildcraft.silicon.client.LaserRenderer::new);
     }
 
     private static Block[] engines() {

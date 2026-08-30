@@ -59,6 +59,12 @@ public class TileLaser extends BlockEntity implements ITickingMachine {
                 setChanged();
             }
         }
+        // Sync so the client can show/hide the beam based on activity.
+        level.sendBlockUpdated(pos, state, state, 3);
+    }
+
+    public int getEnergyStored() {
+        return energy.getEnergyStored();
     }
 
     @Nonnull
@@ -87,4 +93,32 @@ public class TileLaser extends BlockEntity implements ITickingMachine {
         super.load(tag);
         energy.setEnergyStored(tag.getInt("energy"));
     }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Nullable
+    @Override
+    public net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> getUpdatePacket() {
+        return net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(net.minecraft.network.Connection net,
+            net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
+    }
 }
+
