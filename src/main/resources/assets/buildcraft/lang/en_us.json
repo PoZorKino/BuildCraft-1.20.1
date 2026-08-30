@@ -60,7 +60,13 @@
     "block.buildcraft.architect": "Architect Table",
     "block.buildcraft.builder": "Builder",
     "block.buildcraft.filler": "Filler",
+    "block.buildcraft.library": "Blueprint Library",
     "block.buildcraft.marker": "Land Marker",
+
+    "message.buildcraft.library.stored": "Blueprint stored in library",
+    "message.buildcraft.library.copied": "Blueprint copied to template",
+    "message.buildcraft.library.ready": "Library holds a blueprint - use a blank template to copy it",
+    "message.buildcraft.library.empty": "Library is empty - insert a filled template to store it",
 
     "block.buildcraft.robot_station": "Robot Station",
     "block.buildcraft.zone_planner": "Zone Planner",

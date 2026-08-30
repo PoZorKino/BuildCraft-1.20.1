@@ -22,6 +22,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
 import buildcraft.builders.block.BlockBuilderMachine;
+import buildcraft.builders.block.BlockLibrary;
 import buildcraft.builders.block.BlockMarker;
 import buildcraft.builders.block.BlockQuarry;
 import buildcraft.builders.tile.TileArchitect;
@@ -137,6 +138,9 @@ public final class BCBlocks {
     public static final RegistryObject<Block> MARKER = register("marker", () -> new BlockMarker(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.5F).noOcclusion()
                     .sound(SoundType.STONE)));
+
+    public static final RegistryObject<Block> LIBRARY = register("library", () -> new BlockLibrary(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.0F).sound(SoundType.WOOD)));
 
     // --- Silicon ------------------------------------------------------------
 

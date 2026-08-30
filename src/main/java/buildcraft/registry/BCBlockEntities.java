@@ -15,6 +15,7 @@ import buildcraft.BuildCraft;
 import buildcraft.builders.tile.TileArchitect;
 import buildcraft.builders.tile.TileBuilder;
 import buildcraft.builders.tile.TileFiller;
+import buildcraft.builders.tile.TileLibrary;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.robotics.tile.TileRobotStation;
 import buildcraft.silicon.tile.TileAssemblyTable;
@@ -128,6 +129,10 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileFiller>> FILLER =
             BLOCK_ENTITIES.register("filler", () -> BlockEntityType.Builder
                     .of(TileFiller::new, BCBlocks.FILLER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileLibrary>> LIBRARY =
+            BLOCK_ENTITIES.register("library", () -> BlockEntityType.Builder
+                    .of(TileLibrary::new, BCBlocks.LIBRARY.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileRobotStation>> ROBOT_STATION =
             BLOCK_ENTITIES.register("robot_station", () -> BlockEntityType.Builder

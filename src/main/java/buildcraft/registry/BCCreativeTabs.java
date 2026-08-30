@@ -73,6 +73,7 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.ARCHITECT.get());
                 output.accept(BCBlocks.BUILDER.get());
                 output.accept(BCBlocks.FILLER.get());
+                output.accept(BCBlocks.LIBRARY.get());
                 output.accept(BCBlocks.MARKER.get());
                 output.accept(BCBlocks.ROBOT_STATION.get());
                 output.accept(BCBlocks.ZONE_PLANNER.get());
