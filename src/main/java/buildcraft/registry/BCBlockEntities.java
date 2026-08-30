@@ -12,6 +12,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
+import buildcraft.builders.tile.TileArchitect;
+import buildcraft.builders.tile.TileBuilder;
+import buildcraft.builders.tile.TileFiller;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.silicon.tile.TileAssemblyTable;
 import buildcraft.silicon.tile.TileLaser;
@@ -76,6 +79,18 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileLaser>> LASER =
             BLOCK_ENTITIES.register("laser", () -> BlockEntityType.Builder
                     .of(TileLaser::new, BCBlocks.LASER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileArchitect>> ARCHITECT =
+            BLOCK_ENTITIES.register("architect", () -> BlockEntityType.Builder
+                    .of(TileArchitect::new, BCBlocks.ARCHITECT.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileBuilder>> BUILDER =
+            BLOCK_ENTITIES.register("builder", () -> BlockEntityType.Builder
+                    .of(TileBuilder::new, BCBlocks.BUILDER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileFiller>> FILLER =
+            BLOCK_ENTITIES.register("filler", () -> BlockEntityType.Builder
+                    .of(TileFiller::new, BCBlocks.FILLER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TilePipe>> PIPE_COBBLESTONE =
             BLOCK_ENTITIES.register("pipe_cobblestone", () -> BlockEntityType.Builder

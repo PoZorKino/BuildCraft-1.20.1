@@ -34,6 +34,7 @@ public final class BCCreativeTabs {
                 output.accept(BCItems.CHIPSET_GOLD.get());
                 output.accept(BCItems.CHIPSET_DIAMOND.get());
                 output.accept(BCItems.CHIPSET_QUARTZ.get());
+                output.accept(BCItems.TEMPLATE.get());
                 output.accept(BCItems.WRENCH.get());
                 output.accept(BCBlocks.ENGINE_WOOD.get());
                 output.accept(BCBlocks.ENGINE_STONE.get());
@@ -56,6 +57,10 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.PIPE_POWER_COBBLESTONE.get());
                 output.accept(BCBlocks.ASSEMBLY_TABLE.get());
                 output.accept(BCBlocks.LASER.get());
+                output.accept(BCBlocks.ARCHITECT.get());
+                output.accept(BCBlocks.BUILDER.get());
+                output.accept(BCBlocks.FILLER.get());
+                output.accept(BCBlocks.MARKER.get());
             })
             .build());
 

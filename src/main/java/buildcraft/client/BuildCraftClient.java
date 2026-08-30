@@ -48,6 +48,10 @@ public final class BuildCraftClient {
             MenuScreens.register(BCMenuTypes.ENGINE.get(), EngineScreen::new);
             MenuScreens.register(BCMenuTypes.ASSEMBLY_TABLE.get(),
                     buildcraft.silicon.client.AssemblyScreen::new);
+            net.minecraft.client.renderer.item.ItemProperties.register(
+                    buildcraft.registry.BCItems.TEMPLATE.get(),
+                    new net.minecraft.resources.ResourceLocation(buildcraft.BuildCraft.MOD_ID, "used"),
+                    (stack, lvl, entity, seed) -> buildcraft.builders.BlueprintData.hasData(stack) ? 1.0F : 0.0F);
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
                     BCBlocks.TANK.get(), net.minecraft.client.renderer.RenderType.translucent());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(

@@ -32,6 +32,10 @@ public final class BCItems {
     // Misc crafting components.
     public static final RegistryObject<Item> DIAMOND_SHARD = simple("diamond_shard");
 
+    // Builders: blank/used template for the Architect and Builder.
+    public static final RegistryObject<Item> TEMPLATE =
+            ITEMS.register("template", () -> new Item(new Item.Properties().stacksTo(1)));
+
     // Silicon: redstone chipsets, produced in the Assembly Table.
     public static final RegistryObject<Item> CHIPSET_REDSTONE = simple("chipset_redstone");
     public static final RegistryObject<Item> CHIPSET_IRON = simple("chipset_iron");

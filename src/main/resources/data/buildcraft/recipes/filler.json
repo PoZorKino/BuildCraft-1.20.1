@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["III","gGg","ICI"], "key": { "I": { "item": "minecraft:iron_ingot" }, "g": { "item": "buildcraft:gear_gold" }, "G": { "item": "minecraft:crafting_table" }, "C": { "item": "buildcraft:chipset_iron" } }, "result": { "item": "buildcraft:filler" } }

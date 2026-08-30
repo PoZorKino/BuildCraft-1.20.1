@@ -21,7 +21,12 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
+import buildcraft.builders.block.BlockBuilderMachine;
+import buildcraft.builders.block.BlockMarker;
 import buildcraft.builders.block.BlockQuarry;
+import buildcraft.builders.tile.TileArchitect;
+import buildcraft.builders.tile.TileBuilder;
+import buildcraft.builders.tile.TileFiller;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.silicon.block.BlockAssemblyTable;
 import buildcraft.silicon.block.BlockLaser;
@@ -84,6 +89,22 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> QUARRY = register("quarry", () -> new BlockQuarry(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> ARCHITECT = register("architect", () -> new BlockBuilderMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.ARCHITECT.get(), TileArchitect::new));
+
+    public static final RegistryObject<Block> BUILDER = register("builder", () -> new BlockBuilderMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.BUILDER.get(), TileBuilder::new));
+
+    public static final RegistryObject<Block> FILLER = register("filler", () -> new BlockBuilderMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.FILLER.get(), TileFiller::new));
+
+    public static final RegistryObject<Block> MARKER = register("marker", () -> new BlockMarker(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(0.5F).noOcclusion()
+                    .sound(SoundType.STONE)));
 
     // --- Silicon ------------------------------------------------------------
 

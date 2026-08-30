@@ -12,6 +12,7 @@
     "item.buildcraft.chipset_gold": "Gold Chipset",
     "item.buildcraft.chipset_diamond": "Diamond Chipset",
     "item.buildcraft.chipset_quartz": "Quartz Chipset",
+    "item.buildcraft.template": "Template",
     "item.buildcraft.wrench": "Wrench",
 
     "block.buildcraft.engine_wood": "Redstone Engine",
@@ -43,6 +44,11 @@
 
     "block.buildcraft.assembly_table": "Assembly Table",
     "block.buildcraft.laser": "Laser",
+
+    "block.buildcraft.architect": "Architect Table",
+    "block.buildcraft.builder": "Builder",
+    "block.buildcraft.filler": "Filler",
+    "block.buildcraft.marker": "Land Marker",
 
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
