@@ -19,6 +19,16 @@
     "item.buildcraft.board_green": "Green Redstone Board",
     "item.buildcraft.board_blue": "Blue Redstone Board",
     "item.buildcraft.wrench": "Wrench",
+    "item.buildcraft.paintbrush": "Paintbrush",
+    "item.buildcraft.paintbrush.clean": "Craft with a dye to load a colour",
+    "item.buildcraft.paintbrush.color": "Colour: %s",
+    "item.buildcraft.paintbrush.uses": "Uses: %s / %s",
+    "item.buildcraft.pipe_plug": "Pipe Plug",
+    "item.buildcraft.pipe_wire": "Pipe Wire",
+    "item.buildcraft.pipe_wire.color": "Colour: %s",
+    "item.buildcraft.pipe_facade": "Facade",
+    "item.buildcraft.pipe_facade.empty": "Sneak-right-click a full block to copy it",
+    "item.buildcraft.pipe_facade.copied": "Copied: %s",
 
     "block.buildcraft.engine_wood": "Redstone Engine",
     "block.buildcraft.engine_stone": "Stirling Engine",
@@ -98,5 +108,11 @@
     "direction.buildcraft.north": "North",
     "direction.buildcraft.south": "South",
     "direction.buildcraft.west": "West",
-    "direction.buildcraft.east": "East"
+    "direction.buildcraft.east": "East",
+
+    "robot.mode.buildcraft.pickup": "Pickup",
+    "robot.mode.buildcraft.haul": "Haul to station",
+    "robot.mode.buildcraft.follow": "Follow",
+    "robot.mode.buildcraft.guard": "Guard",
+    "message.buildcraft.robot.mode": "Robot mode: %s"
 }

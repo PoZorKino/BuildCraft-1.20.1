@@ -41,6 +41,15 @@ public final class BCCreativeTabs {
                 output.accept(BCItems.BOARD_GREEN.get());
                 output.accept(BCItems.BOARD_BLUE.get());
                 output.accept(BCItems.WRENCH.get());
+                output.accept(BCItems.PAINTBRUSH.get());
+                for (net.minecraft.world.item.DyeColor color : net.minecraft.world.item.DyeColor.values()) {
+                    output.accept(buildcraft.core.item.ItemPaintbrush.withColor(BCItems.PAINTBRUSH.get(), color));
+                }
+                output.accept(BCItems.PIPE_PLUG.get());
+                for (net.minecraft.world.item.DyeColor color : net.minecraft.world.item.DyeColor.values()) {
+                    output.accept(buildcraft.transport.item.ItemPipeWire.withColor(BCItems.PIPE_WIRE.get(), color));
+                }
+                output.accept(BCItems.PIPE_FACADE.get());
                 output.accept(BCBlocks.ENGINE_WOOD.get());
                 output.accept(BCBlocks.ENGINE_STONE.get());
                 output.accept(BCBlocks.ENGINE_IRON.get());

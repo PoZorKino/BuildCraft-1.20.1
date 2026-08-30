@@ -17,6 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import buildcraft.energy.client.EngineScreen;
 import buildcraft.energy.tile.TileEngineBase;
 import buildcraft.registry.BCBlocks;
+import buildcraft.registry.BCItems;
 import buildcraft.registry.BCMenuTypes;
 
 /** Client-only bootstrap: screens and colour handlers. No-op on dedicated servers. */
@@ -50,8 +51,18 @@ public final class BuildCraftClient {
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_OBSIDIAN.get(),
                 buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_VOID.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
                 buildcraft.silicon.client.LaserRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.ENGINE_WOOD.get(),
+                buildcraft.energy.client.EngineRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.ENGINE_STONE.get(),
+                buildcraft.energy.client.EngineRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.ENGINE_IRON.get(),
+                buildcraft.energy.client.EngineRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.ENGINE_CREATIVE.get(),
+                buildcraft.energy.client.EngineRenderer::new);
         event.registerEntityRenderer(buildcraft.registry.BCEntities.ROBOT.get(),
                 buildcraft.robotics.client.RobotRenderer::new);
     }
@@ -95,6 +106,19 @@ public final class BuildCraftClient {
         });
     }
 
+    private static Block[] pipes() {
+        return new Block[] {
+                BCBlocks.PIPE_WOOD.get(),
+                BCBlocks.PIPE_COBBLESTONE.get(),
+                BCBlocks.PIPE_STONE.get(),
+                BCBlocks.PIPE_GOLD.get(),
+                BCBlocks.PIPE_IRON.get(),
+                BCBlocks.PIPE_DIAMOND.get(),
+                BCBlocks.PIPE_OBSIDIAN.get(),
+                BCBlocks.PIPE_VOID.get()
+        };
+    }
+
     private static void registerBlockColors(RegisterColorHandlersEvent.Block event) {
         event.register((state, level, pos, tintIndex) -> {
             if (tintIndex != 1) {
@@ -108,10 +132,35 @@ public final class BuildCraftClient {
             }
             return STAGE_COLORS[0];
         }, engines());
+        event.register((state, level, pos, tintIndex) -> {
+            if (tintIndex != 0) {
+                return -1;
+            }
+            if (level != null && pos != null) {
+                BlockEntity be = level.getBlockEntity(pos);
+                if (be instanceof buildcraft.transport.tile.TilePipe pipe && pipe.getColor() != null) {
+                    return 0xFF000000 | pipe.getColor().getTextColor();
+                }
+            }
+            return -1;
+        }, pipes());
     }
 
     private static void registerItemColors(RegisterColorHandlersEvent.Item event) {
         event.register((stack, tintIndex) -> tintIndex == 1 ? STAGE_COLORS[0] : -1, engines());
+        event.register((stack, tintIndex) -> {
+            if (tintIndex != 0) {
+                return -1;
+            }
+            return 0xFF000000 | buildcraft.transport.item.ItemPipeWire.getColor(stack).getTextColor();
+        }, BCItems.PIPE_WIRE.get());
+        event.register((stack, tintIndex) -> {
+            if (tintIndex != 0) {
+                return -1;
+            }
+            var color = buildcraft.core.item.ItemPaintbrush.getColor(stack);
+            return color == null ? -1 : 0xFF000000 | color.getTextColor();
+        }, BCItems.PAINTBRUSH.get());
     }
 
     private BuildCraftClient() {}

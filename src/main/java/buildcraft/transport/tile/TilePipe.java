@@ -7,9 +7,11 @@ package buildcraft.transport.tile;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -18,6 +20,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,6 +35,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import buildcraft.factory.tile.ITickingMachine;
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.pipe.PipeAttachment;
 
 /**
  * Base transport pipe: carries item stacks along the connected pipe network and finally inserts them
@@ -54,6 +59,10 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
 
     protected final int transitTicks;
     protected final List<TravelingItem> items = new ArrayList<>();
+    private final EnumMap<Direction, PipeAttachment> attachments = new EnumMap<>(Direction.class);
+    private boolean wirePowered;
+    @Nullable
+    private DyeColor color;
 
     private final Map<Direction, LazyOptional<IItemHandler>> insertCaps = new EnumMap<>(Direction.class);
 
@@ -111,6 +120,154 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         return transitTicks;
     }
 
+    @Nullable
+    public PipeAttachment getAttachment(Direction side) {
+        return attachments.get(side);
+    }
+
+    public Map<Direction, PipeAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public boolean isSideBlocked(Direction side) {
+        PipeAttachment attachment = attachments.get(side);
+        return attachment != null && attachment.isBlocking();
+    }
+
+    public boolean hasWire() {
+        for (PipeAttachment attachment : attachments.values()) {
+            if (attachment.kind == PipeAttachment.Kind.WIRE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasWire(DyeColor color) {
+        for (PipeAttachment attachment : attachments.values()) {
+            if (attachment.kind == PipeAttachment.Kind.WIRE && attachment.color == color) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isWirePowered() {
+        return wirePowered;
+    }
+
+    @Nullable
+    public DyeColor getColor() {
+        return color;
+    }
+
+    public void setColor(@Nullable DyeColor color) {
+        if (this.color == color) {
+            return;
+        }
+        this.color = color;
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            BlockPipe.refreshConnections(level, worldPosition);
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    /** Attach to {@code side} if the face is free. Refreshes pipe connections and wire power. */
+    public boolean attach(Direction side, PipeAttachment attachment) {
+        if (attachments.containsKey(side)) {
+            return false;
+        }
+        attachments.put(side, attachment);
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            BlockPipe.refreshConnections(level, worldPosition);
+            updateWirePower();
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+        return true;
+    }
+
+    @Nullable
+    public PipeAttachment removeAttachment(Direction side) {
+        PipeAttachment removed = attachments.remove(side);
+        if (removed != null) {
+            setChanged();
+            if (level != null && !level.isClientSide) {
+                BlockPipe.refreshConnections(level, worldPosition);
+                updateWirePower();
+                level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+            }
+        }
+        return removed;
+    }
+
+    public void dropAttachments(Level level, BlockPos pos) {
+        for (PipeAttachment attachment : attachments.values()) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                    attachment.asItem());
+        }
+        attachments.clear();
+    }
+
+    public void updateWirePower() {
+        if (level == null || level.isClientSide) {
+            return;
+        }
+        boolean powered = computeWirePower();
+        if (powered != wirePowered) {
+            wirePowered = powered;
+            setChanged();
+            level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
+            for (Direction dir : Direction.values()) {
+                level.updateNeighborsAt(worldPosition.relative(dir), getBlockState().getBlock());
+            }
+        }
+    }
+
+    private boolean computeWirePower() {
+        Set<DyeColor> colors = new HashSet<>();
+        for (PipeAttachment attachment : attachments.values()) {
+            if (attachment.kind == PipeAttachment.Kind.WIRE && attachment.color != null) {
+                colors.add(attachment.color);
+            }
+        }
+        if (colors.isEmpty()) {
+            return false;
+        }
+        for (DyeColor color : colors) {
+            if (isWireNetworkPowered(color)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isWireNetworkPowered(DyeColor color) {
+        Set<BlockPos> visited = new HashSet<>();
+        List<BlockPos> queue = new ArrayList<>();
+        queue.add(worldPosition);
+        visited.add(worldPosition);
+        while (!queue.isEmpty()) {
+            BlockPos pos = queue.remove(queue.size() - 1);
+            for (Direction dir : Direction.values()) {
+                BlockPos neighborPos = pos.relative(dir);
+                BlockState neighborState = level.getBlockState(neighborPos);
+                if (neighborState.getBlock() instanceof BlockPipe) {
+                    BlockEntity be = level.getBlockEntity(neighborPos);
+                    if (be instanceof TilePipe pipe && pipe.hasWire(color) && visited.add(neighborPos)) {
+                        queue.add(neighborPos);
+                    }
+                    continue;
+                }
+                if (level.getSignal(neighborPos, dir) > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     /**
      * Candidate exit faces, in preference order. Default: every connected face except the entry,
      * then bounce back as a last resort. Subclasses (iron / diamond) override this to restrict routing.
@@ -164,6 +321,9 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER && side != null) {
+            if (isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return insertCaps.get(side).cast();
         }
         return super.getCapability(cap, side);
@@ -189,6 +349,17 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
             list.add(entry);
         }
         tag.put("items", list);
+        ListTag attached = new ListTag();
+        for (Map.Entry<Direction, PipeAttachment> entry : attachments.entrySet()) {
+            CompoundTag entryTag = entry.getValue().save();
+            entryTag.put("side", buildcraft.lib.nbt.NBTUtilBC.writeDirection(entry.getKey()));
+            attached.add(entryTag);
+        }
+        tag.put("attachments", attached);
+        tag.putBoolean("wirePowered", wirePowered);
+        if (color != null) {
+            tag.putString("color", color.getName());
+        }
     }
 
     @Override
@@ -205,6 +376,18 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
             }
             items.add(new TravelingItem(stack, from, entry.getInt("age")));
         }
+        attachments.clear();
+        ListTag attached = tag.getList("attachments", 10);
+        for (int i = 0; i < attached.size(); i++) {
+            CompoundTag entry = attached.getCompound(i);
+            Direction side = buildcraft.lib.nbt.NBTUtilBC.readDirection(entry.get("side"));
+            PipeAttachment attachment = PipeAttachment.load(entry);
+            if (side != null && attachment != null) {
+                attachments.put(side, attachment);
+            }
+        }
+        wirePowered = tag.getBoolean("wirePowered");
+        color = tag.contains("color") ? DyeColor.byName(tag.getString("color"), null) : null;
     }
 
     @Override

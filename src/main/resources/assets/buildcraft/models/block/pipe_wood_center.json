@@ -18,21 +18,27 @@
             "faces": {
                 "down": {
                     "texture": "#t"
+                , "tintindex": 0
                 },
                 "up": {
                     "texture": "#t"
+                , "tintindex": 0
                 },
                 "north": {
                     "texture": "#t"
+                , "tintindex": 0
                 },
                 "south": {
                     "texture": "#t"
+                , "tintindex": 0
                 },
                 "west": {
                     "texture": "#t"
+                , "tintindex": 0
                 },
                 "east": {
                     "texture": "#t"
+                , "tintindex": 0
                 }
             }
         }
