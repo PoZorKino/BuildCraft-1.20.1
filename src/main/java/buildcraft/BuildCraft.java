@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import buildcraft.client.BuildCraftClient;
+import buildcraft.energy.fluid.BCFluids;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.registry.BCBlocks;
 import buildcraft.registry.BCCreativeTabs;
@@ -33,6 +34,7 @@ public class BuildCraft {
         BCBlocks.register(modBus);
         BCBlockEntities.register(modBus);
         BCMenuTypes.register(modBus);
+        BCFluids.register(modBus);
         BCCreativeTabs.register(modBus);
 
         BuildCraftClient.init(modBus);

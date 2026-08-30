@@ -12,5 +12,12 @@
     "block.buildcraft.engine_wood": "Redstone Engine",
     "block.buildcraft.engine_stone": "Stirling Engine",
     "block.buildcraft.engine_iron": "Combustion Engine",
-    "block.buildcraft.engine_creative": "Creative Engine"
+    "block.buildcraft.engine_creative": "Creative Engine",
+
+    "block.buildcraft.oil": "Oil",
+    "block.buildcraft.fuel": "Fuel",
+    "fluid_type.buildcraft.oil": "Oil",
+    "fluid_type.buildcraft.fuel": "Fuel",
+    "item.buildcraft.bucket_oil": "Oil Bucket",
+    "item.buildcraft.bucket_fuel": "Fuel Bucket"
 }

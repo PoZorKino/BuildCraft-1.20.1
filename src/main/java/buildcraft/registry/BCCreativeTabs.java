@@ -34,6 +34,8 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.ENGINE_STONE.get());
                 output.accept(BCBlocks.ENGINE_IRON.get());
                 output.accept(BCBlocks.ENGINE_CREATIVE.get());
+                output.accept(buildcraft.energy.fluid.BCFluids.OIL_BUCKET.get());
+                output.accept(buildcraft.energy.fluid.BCFluids.FUEL_BUCKET.get());
             })
             .build());
 

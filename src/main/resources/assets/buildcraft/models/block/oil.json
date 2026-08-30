@@ -1,0 +1,6 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "buildcraft:fluid/oil_still"
+    }
+}
