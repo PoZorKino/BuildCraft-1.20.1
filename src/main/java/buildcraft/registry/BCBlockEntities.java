@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
+import buildcraft.builders.tile.TileQuarry;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
@@ -51,6 +52,10 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileMiningWell>> MINING_WELL =
             BLOCK_ENTITIES.register("mining_well", () -> BlockEntityType.Builder
                     .of(TileMiningWell::new, BCBlocks.MINING_WELL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileQuarry>> QUARRY =
+            BLOCK_ENTITIES.register("quarry", () -> BlockEntityType.Builder
+                    .of(TileQuarry::new, BCBlocks.QUARRY.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITIES.register(modBus);

@@ -24,7 +24,10 @@
     "block.buildcraft.tank": "Tank",
     "block.buildcraft.pump": "Pump",
     "block.buildcraft.mining_well": "Mining Well",
+    "block.buildcraft.quarry": "Quarry",
 
     "message.buildcraft.tank.empty": "Tank is empty",
-    "message.buildcraft.tank.contents": "%s / %s mB of %s"
+    "message.buildcraft.tank.contents": "%s / %s mB of %s",
+    "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",
+    "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)"
 }

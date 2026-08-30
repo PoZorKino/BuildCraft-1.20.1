@@ -19,6 +19,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
+import buildcraft.builders.block.BlockQuarry;
+import buildcraft.builders.tile.TileQuarry;
 import buildcraft.energy.block.BlockEngine;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
@@ -60,6 +62,11 @@ public final class BCBlocks {
     public static final RegistryObject<Block> MINING_WELL = register("mining_well", () -> new BlockMachine<>(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
             () -> BCBlockEntities.MINING_WELL.get(), TileMiningWell::new));
+
+    // --- Builders -----------------------------------------------------------
+
+    public static final RegistryObject<Block> QUARRY = register("quarry", () -> new BlockQuarry(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
 
     private static RegistryObject<Block> register(String name, Supplier<Block> block) {
         RegistryObject<Block> obj = BLOCKS.register(name, block);

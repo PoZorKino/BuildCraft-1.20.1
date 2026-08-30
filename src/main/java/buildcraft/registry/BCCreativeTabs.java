@@ -39,6 +39,7 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.TANK.get());
                 output.accept(BCBlocks.PUMP.get());
                 output.accept(BCBlocks.MINING_WELL.get());
+                output.accept(BCBlocks.QUARRY.get());
             })
             .build());
 
