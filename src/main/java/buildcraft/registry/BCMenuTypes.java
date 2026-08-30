@@ -16,6 +16,7 @@ import buildcraft.BuildCraft;
 import buildcraft.energy.menu.EngineMenu;
 import buildcraft.factory.menu.AutoWorkbenchMenu;
 import buildcraft.silicon.menu.AssemblyMenu;
+import buildcraft.silicon.menu.SiliconTableMenu;
 
 public final class BCMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -29,6 +30,12 @@ public final class BCMenuTypes {
 
     public static final RegistryObject<MenuType<AutoWorkbenchMenu>> AUTO_WORKBENCH =
             MENUS.register("auto_workbench", () -> IForgeMenuType.create(AutoWorkbenchMenu::new));
+
+    public static final RegistryObject<MenuType<SiliconTableMenu>> INTEGRATION_TABLE =
+            MENUS.register("integration_table", () -> IForgeMenuType.create(SiliconTableMenu::integration));
+
+    public static final RegistryObject<MenuType<SiliconTableMenu>> PROGRAMMING_TABLE =
+            MENUS.register("programming_table", () -> IForgeMenuType.create(SiliconTableMenu::programming));
 
     public static void register(IEventBus modBus) {
         MENUS.register(modBus);

@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["ded","gGg","ttt"], "key": { "d": { "item": "minecraft:diamond" }, "e": { "item": "buildcraft:chipset_diamond" }, "g": { "item": "buildcraft:gear_diamond" }, "G": { "item": "buildcraft:gear_gold" }, "t": { "item": "minecraft:smooth_stone" } }, "result": { "item": "buildcraft:integration_table" } }

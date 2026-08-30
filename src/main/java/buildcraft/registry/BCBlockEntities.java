@@ -18,7 +18,9 @@ import buildcraft.builders.tile.TileFiller;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.robotics.tile.TileRobotStation;
 import buildcraft.silicon.tile.TileAssemblyTable;
+import buildcraft.silicon.tile.TileIntegrationTable;
 import buildcraft.silicon.tile.TileLaser;
+import buildcraft.silicon.tile.TileProgrammingTable;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
@@ -106,6 +108,14 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileLaser>> LASER =
             BLOCK_ENTITIES.register("laser", () -> BlockEntityType.Builder
                     .of(TileLaser::new, BCBlocks.LASER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileIntegrationTable>> INTEGRATION_TABLE =
+            BLOCK_ENTITIES.register("integration_table", () -> BlockEntityType.Builder
+                    .of(TileIntegrationTable::new, BCBlocks.INTEGRATION_TABLE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileProgrammingTable>> PROGRAMMING_TABLE =
+            BLOCK_ENTITIES.register("programming_table", () -> BlockEntityType.Builder
+                    .of(TileProgrammingTable::new, BCBlocks.PROGRAMMING_TABLE.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileArchitect>> ARCHITECT =
             BLOCK_ENTITIES.register("architect", () -> BlockEntityType.Builder

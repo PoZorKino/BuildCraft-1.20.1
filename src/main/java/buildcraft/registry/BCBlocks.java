@@ -30,7 +30,10 @@ import buildcraft.builders.tile.TileFiller;
 import buildcraft.builders.tile.TileQuarry;
 import buildcraft.silicon.block.BlockAssemblyTable;
 import buildcraft.silicon.block.BlockLaser;
+import buildcraft.silicon.block.BlockSiliconTable;
 import buildcraft.silicon.tile.TileAssemblyTable;
+import buildcraft.silicon.tile.TileIntegrationTable;
+import buildcraft.silicon.tile.TileProgrammingTable;
 import buildcraft.energy.block.BlockEngine;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
@@ -144,6 +147,16 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> LASER = register("laser", () -> new BlockLaser(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> INTEGRATION_TABLE = register("integration_table",
+            () -> new BlockSiliconTable<>(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+                    () -> BCBlockEntities.INTEGRATION_TABLE.get(), TileIntegrationTable::new));
+
+    public static final RegistryObject<Block> PROGRAMMING_TABLE = register("programming_table",
+            () -> new BlockSiliconTable<>(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+                    () -> BCBlockEntities.PROGRAMMING_TABLE.get(), TileProgrammingTable::new));
 
     // --- Robotics -----------------------------------------------------------
 

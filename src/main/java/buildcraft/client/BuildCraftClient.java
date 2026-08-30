@@ -64,6 +64,10 @@ public final class BuildCraftClient {
                     buildcraft.silicon.client.AssemblyScreen::new);
             MenuScreens.register(BCMenuTypes.AUTO_WORKBENCH.get(),
                     buildcraft.factory.client.AutoWorkbenchScreen::new);
+            MenuScreens.register(BCMenuTypes.INTEGRATION_TABLE.get(),
+                    buildcraft.silicon.client.SiliconTableScreen::new);
+            MenuScreens.register(BCMenuTypes.PROGRAMMING_TABLE.get(),
+                    buildcraft.silicon.client.SiliconTableScreen::new);
             net.minecraft.client.renderer.item.ItemProperties.register(
                     buildcraft.registry.BCItems.TEMPLATE.get(),
                     new net.minecraft.resources.ResourceLocation(buildcraft.BuildCraft.MOD_ID, "used"),
