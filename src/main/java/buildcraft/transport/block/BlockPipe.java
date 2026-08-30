@@ -37,8 +37,8 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.network.NetworkHooks;
 
 import buildcraft.factory.tile.ITickingMachine;
+import buildcraft.transport.pipe.IPipeHolder;
 import buildcraft.transport.pipe.PipeAttachment;
-import buildcraft.transport.tile.TilePipe;
 import buildcraft.transport.tile.TilePipeDiamond;
 
 /**
@@ -115,7 +115,7 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
 
     private static boolean isBlocked(BlockGetter level, BlockPos pos, Direction dir) {
         BlockEntity be = level.getBlockEntity(pos);
-        return be instanceof TilePipe pipe && pipe.isSideBlocked(dir);
+        return be instanceof IPipeHolder holder && holder.isSideBlocked(dir);
     }
 
     /** Uncoloured pipes connect to everything; coloured pipes only connect to the same colour or uncoloured. */
@@ -128,7 +128,7 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     @Nullable
     private static DyeColor colorOf(BlockGetter level, BlockPos pos) {
         BlockEntity be = level.getBlockEntity(pos);
-        return be instanceof TilePipe pipe ? pipe.getColor() : null;
+        return be instanceof IPipeHolder holder ? holder.getColor() : null;
     }
 
     public BlockState withConnections(BlockGetter level, BlockPos pos, BlockState state) {
@@ -163,8 +163,8 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
             InteractionHand hand, BlockHitResult hit) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (player.isShiftKeyDown() && player.getItemInHand(hand).isEmpty() && be instanceof TilePipe pipe) {
-            PipeAttachment removed = pipe.removeAttachment(hit.getDirection());
+        if (player.isShiftKeyDown() && player.getItemInHand(hand).isEmpty() && be instanceof IPipeHolder holder) {
+            PipeAttachment removed = holder.removeAttachment(hit.getDirection());
             if (removed != null) {
                 if (!player.getAbilities().instabuild) {
                     ItemHandlerHelper.giveItemToPlayer(player, removed.asItem());
@@ -186,8 +186,8 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof TilePipe pipe) {
-                pipe.dropAttachments(level, pos);
+            if (be instanceof IPipeHolder holder) {
+                holder.dropAttachments(level, pos);
             }
             if (be instanceof TilePipeDiamond diamond) {
                 diamond.dropContents(level, pos);
@@ -201,8 +201,8 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos,
             boolean moved) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof TilePipe pipe && pipe.hasWire()) {
-            pipe.updateWirePower();
+        if (be instanceof IPipeHolder holder && holder.hasWire()) {
+            holder.updateWirePower();
         }
     }
 
@@ -216,7 +216,7 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     @SuppressWarnings("deprecation")
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof TilePipe pipe && pipe.isWirePowered()) {
+        if (be instanceof IPipeHolder holder && holder.isWirePowered()) {
             return 15;
         }
         return 0;

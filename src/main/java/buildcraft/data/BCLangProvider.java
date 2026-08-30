@@ -30,6 +30,9 @@ public class BCLangProvider extends LanguageProvider {
         add("item.buildcraft.paintbrush.clean", "Craft with a dye to load a colour");
         add("item.buildcraft.paintbrush.color", "Colour: %s");
         add("item.buildcraft.paintbrush.uses", "Uses: %s / %s");
+        add("item.buildcraft.pipe_wire.color", "Colour: %s");
+        add("item.buildcraft.pipe_facade.empty", "Sneak-right-click a full block to copy it");
+        add("item.buildcraft.pipe_facade.copied", "Copied: %s");
         add("robot.mode.buildcraft.pickup", "Pickup");
         add("robot.mode.buildcraft.haul", "Haul to station");
         add("robot.mode.buildcraft.follow", "Follow");

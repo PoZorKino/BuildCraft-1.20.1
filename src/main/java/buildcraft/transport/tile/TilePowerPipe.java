@@ -11,6 +11,10 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,13 +28,15 @@ import buildcraft.factory.tile.ITickingMachine;
 import buildcraft.factory.util.MachineEnergyStorage;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.pipe.IPipeHolder;
+import buildcraft.transport.pipe.PipeSideState;
 
 /**
  * Power (kinesis) pipe: receives energy from engines/pipes and transmits it towards connected energy
  * consumers, balancing along the pipe network. Placing one next to an engine lets it distribute the
  * engine's output to machines further away.
  */
-public class TilePowerPipe extends BlockEntity implements ITickingMachine {
+public class TilePowerPipe extends BlockEntity implements ITickingMachine, IPipeHolder {
 
     public static final int CAPACITY = 10_000;
     public static final int MAX_RECEIVE = 1_000;
@@ -38,6 +44,7 @@ public class TilePowerPipe extends BlockEntity implements ITickingMachine {
 
     private final MachineEnergyStorage energy = new MachineEnergyStorage(CAPACITY, MAX_RECEIVE);
     private final LazyOptional<IEnergyStorage> energyCap = LazyOptional.of(() -> energy);
+    private final PipeSideState sides = new PipeSideState(this);
 
     public TilePowerPipe(BlockPos pos, BlockState state) {
         this(BCBlockEntities.PIPE_POWER_COBBLESTONE.get(), pos, state);
@@ -45,6 +52,16 @@ public class TilePowerPipe extends BlockEntity implements ITickingMachine {
 
     public TilePowerPipe(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @Override
+    public BlockEntity asBlockEntity() {
+        return this;
+    }
+
+    @Override
+    public PipeSideState sides() {
+        return sides;
     }
 
     @Override
@@ -94,6 +111,9 @@ public class TilePowerPipe extends BlockEntity implements ITickingMachine {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null && isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return energyCap.cast();
         }
         return super.getCapability(cap, side);
@@ -109,11 +129,39 @@ public class TilePowerPipe extends BlockEntity implements ITickingMachine {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putInt("energy", energy.getEnergyStored());
+        sides.save(tag);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         energy.setEnergyStored(tag.getInt("energy"));
+        sides.load(tag);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 }

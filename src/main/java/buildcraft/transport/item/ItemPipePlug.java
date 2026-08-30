@@ -11,8 +11,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import buildcraft.transport.pipe.IPipeHolder;
 import buildcraft.transport.pipe.PipeAttachment;
-import buildcraft.transport.tile.TilePipe;
 
 /** A blocking plug that covers one face of a pipe and stops connections through that side. */
 public class ItemPipePlug extends Item {
@@ -24,9 +24,9 @@ public class ItemPipePlug extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (be instanceof TilePipe pipe) {
+        if (be instanceof IPipeHolder holder) {
             Direction side = context.getClickedFace();
-            if (pipe.attach(side, PipeAttachment.plug())) {
+            if (holder.attach(side, PipeAttachment.plug())) {
                 if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild) {
                     context.getItemInHand().shrink(1);
                 }

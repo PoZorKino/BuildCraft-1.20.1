@@ -21,8 +21,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+import buildcraft.transport.pipe.IPipeHolder;
 import buildcraft.transport.pipe.PipeAttachment;
-import buildcraft.transport.tile.TilePipe;
 
 /** Coloured pipe wire: attaches to a pipe face and conducts redstone along matching wires. */
 public class ItemPipeWire extends Item {
@@ -51,9 +51,9 @@ public class ItemPipeWire extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (be instanceof TilePipe pipe) {
+        if (be instanceof IPipeHolder holder) {
             Direction side = context.getClickedFace();
-            if (pipe.attach(side, PipeAttachment.wire(getColor(context.getItemInHand())))) {
+            if (holder.attach(side, PipeAttachment.wire(getColor(context.getItemInHand())))) {
                 if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild) {
                     context.getItemInHand().shrink(1);
                 }

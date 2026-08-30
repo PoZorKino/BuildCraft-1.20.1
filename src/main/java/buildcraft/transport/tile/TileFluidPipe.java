@@ -11,6 +11,10 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -26,19 +30,22 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import buildcraft.factory.tile.ITickingMachine;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.pipe.IPipeHolder;
+import buildcraft.transport.pipe.PipeSideState;
 
 /**
  * Fluid transport pipe: buffers a small amount of fluid and flows it towards connected fluid
  * handlers (tanks, machines) and, failing that, balances it into neighbouring fluid pipes so it
  * travels along the network.
  */
-public class TileFluidPipe extends BlockEntity implements ITickingMachine {
+public class TileFluidPipe extends BlockEntity implements ITickingMachine, IPipeHolder {
 
     public static final int CAPACITY = 2_000;
     public static final int FLOW_RATE = 100;
 
     protected final FluidTank tank = new FluidTank(CAPACITY);
     private final LazyOptional<IFluidHandler> fluidCap = LazyOptional.of(() -> tank);
+    private final PipeSideState sides = new PipeSideState(this);
 
     public TileFluidPipe(BlockPos pos, BlockState state) {
         this(BCBlockEntities.PIPE_FLUID_COBBLESTONE.get(), pos, state);
@@ -46,6 +53,16 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine {
 
     public TileFluidPipe(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
+    }
+
+    @Override
+    public BlockEntity asBlockEntity() {
+        return this;
+    }
+
+    @Override
+    public PipeSideState sides() {
+        return sides;
     }
 
     @Override
@@ -93,6 +110,9 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.FLUID_HANDLER) {
+            if (side != null && isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return fluidCap.cast();
         }
         return super.getCapability(cap, side);
@@ -108,11 +128,39 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.put("tank", tank.writeToNBT(new CompoundTag()));
+        sides.save(tag);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         tank.readFromNBT(tag.getCompound("tank"));
+        sides.load(tag);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        load(tag);
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        CompoundTag tag = pkt.getTag();
+        if (tag != null) {
+            handleUpdateTag(tag);
+        }
     }
 }

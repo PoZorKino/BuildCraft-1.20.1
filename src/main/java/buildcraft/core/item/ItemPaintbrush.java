@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.pipe.IPipeHolder;
 
 /**
  * Paintbrush: craft with a dye to load a colour, then right-click pipes (or wool/concrete/glass)
@@ -71,12 +71,12 @@ public class ItemPaintbrush extends Item {
         DyeColor color = getColor(stack);
         int uses = getUses(stack);
 
-        if (be instanceof TilePipe pipe) {
+        if (be instanceof IPipeHolder holder) {
             if (color != null && uses <= 0) {
                 return InteractionResult.FAIL;
             }
             if (!level.isClientSide) {
-                pipe.setColor(color);
+                holder.setColor(color);
                 consumeUse(context, stack, color);
             }
             return InteractionResult.sidedSuccess(level.isClientSide);

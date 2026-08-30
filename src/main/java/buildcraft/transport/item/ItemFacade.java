@@ -25,8 +25,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.pipe.IPipeHolder;
 import buildcraft.transport.pipe.PipeAttachment;
-import buildcraft.transport.tile.TilePipe;
 
 /**
  * Facade: sneak-right-click a solid block to copy it, then right-click a pipe face to cover that
@@ -60,13 +60,13 @@ public class ItemFacade extends Item {
     public InteractionResult useOn(UseOnContext context) {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
-        if (be instanceof TilePipe pipe) {
+        if (be instanceof IPipeHolder holder) {
             String copied = getCopiedBlock(context.getItemInHand());
             if (copied == null) {
                 return InteractionResult.FAIL;
             }
             Direction side = context.getClickedFace();
-            if (pipe.attach(side, PipeAttachment.facade(copied))) {
+            if (holder.attach(side, PipeAttachment.facade(copied))) {
                 if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild) {
                     context.getItemInHand().shrink(1);
                 }

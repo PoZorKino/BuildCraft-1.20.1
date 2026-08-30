@@ -53,6 +53,14 @@ public final class BuildCraftClient {
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_VOID.get(),
                 buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_FLUID_WOOD.get(),
+                buildcraft.transport.client.PipeHolderRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_FLUID_COBBLESTONE.get(),
+                buildcraft.transport.client.PipeHolderRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_POWER_WOOD.get(),
+                buildcraft.transport.client.PipeHolderRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_POWER_COBBLESTONE.get(),
+                buildcraft.transport.client.PipeHolderRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
                 buildcraft.silicon.client.LaserRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.ENGINE_WOOD.get(),
@@ -115,7 +123,11 @@ public final class BuildCraftClient {
                 BCBlocks.PIPE_IRON.get(),
                 BCBlocks.PIPE_DIAMOND.get(),
                 BCBlocks.PIPE_OBSIDIAN.get(),
-                BCBlocks.PIPE_VOID.get()
+                BCBlocks.PIPE_VOID.get(),
+                BCBlocks.PIPE_FLUID_WOOD.get(),
+                BCBlocks.PIPE_FLUID_COBBLESTONE.get(),
+                BCBlocks.PIPE_POWER_WOOD.get(),
+                BCBlocks.PIPE_POWER_COBBLESTONE.get()
         };
     }
 
@@ -138,8 +150,8 @@ public final class BuildCraftClient {
             }
             if (level != null && pos != null) {
                 BlockEntity be = level.getBlockEntity(pos);
-                if (be instanceof buildcraft.transport.tile.TilePipe pipe && pipe.getColor() != null) {
-                    return 0xFF000000 | pipe.getColor().getTextColor();
+                if (be instanceof buildcraft.transport.pipe.IPipeHolder holder && holder.getColor() != null) {
+                    return 0xFF000000 | holder.getColor().getTextColor();
                 }
             }
             return -1;

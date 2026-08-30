@@ -84,6 +84,9 @@ public class TilePipeWood extends TilePipe {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null && isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return energyCap.cast();
         }
         return super.getCapability(cap, side);
