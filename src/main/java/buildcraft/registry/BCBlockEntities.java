@@ -23,6 +23,11 @@ import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
+import buildcraft.factory.tile.TileAutoWorkbench;
+import buildcraft.factory.tile.TileChute;
+import buildcraft.factory.tile.TileDistiller;
+import buildcraft.factory.tile.TileFloodgate;
+import buildcraft.factory.tile.TileHeatExchanger;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
@@ -69,6 +74,26 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileRefinery>> REFINERY =
             BLOCK_ENTITIES.register("refinery", () -> BlockEntityType.Builder
                     .of(TileRefinery::new, BCBlocks.REFINERY.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileRefinery>> DISTILLER =
+            BLOCK_ENTITIES.register("distiller", () -> BlockEntityType.Builder
+                    .<TileRefinery>of(TileDistiller::new, BCBlocks.DISTILLER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileFloodgate>> FLOODGATE =
+            BLOCK_ENTITIES.register("floodgate", () -> BlockEntityType.Builder
+                    .of(TileFloodgate::new, BCBlocks.FLOODGATE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileHeatExchanger>> HEAT_EXCHANGER =
+            BLOCK_ENTITIES.register("heat_exchanger", () -> BlockEntityType.Builder
+                    .of(TileHeatExchanger::new, BCBlocks.HEAT_EXCHANGER.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileChute>> CHUTE =
+            BLOCK_ENTITIES.register("chute", () -> BlockEntityType.Builder
+                    .of(TileChute::new, BCBlocks.CHUTE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileAutoWorkbench>> AUTO_WORKBENCH =
+            BLOCK_ENTITIES.register("auto_workbench", () -> BlockEntityType.Builder
+                    .of(TileAutoWorkbench::new, BCBlocks.AUTO_WORKBENCH.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileQuarry>> QUARRY =
             BLOCK_ENTITIES.register("quarry", () -> BlockEntityType.Builder

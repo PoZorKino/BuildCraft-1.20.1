@@ -36,9 +36,15 @@ import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
+import buildcraft.factory.block.BlockAutoWorkbench;
 import buildcraft.factory.block.BlockMachine;
 import buildcraft.factory.block.BlockRefinery;
 import buildcraft.factory.block.BlockTank;
+import buildcraft.factory.tile.TileAutoWorkbench;
+import buildcraft.factory.tile.TileChute;
+import buildcraft.factory.tile.TileDistiller;
+import buildcraft.factory.tile.TileFloodgate;
+import buildcraft.factory.tile.TileHeatExchanger;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
@@ -87,6 +93,26 @@ public final class BCBlocks {
     public static final RegistryObject<Block> REFINERY = register("refinery", () -> new BlockRefinery(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
             () -> BCBlockEntities.REFINERY.get(), TileRefinery::new));
+
+    public static final RegistryObject<Block> DISTILLER = register("distiller", () -> new BlockRefinery(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.DISTILLER.get(), TileDistiller::new));
+
+    public static final RegistryObject<Block> FLOODGATE = register("floodgate", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.FLOODGATE.get(), TileFloodgate::new));
+
+    public static final RegistryObject<Block> HEAT_EXCHANGER = register("heat_exchanger", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.HEAT_EXCHANGER.get(), TileHeatExchanger::new));
+
+    public static final RegistryObject<Block> CHUTE = register("chute", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.CHUTE.get(), TileChute::new));
+
+    public static final RegistryObject<Block> AUTO_WORKBENCH = register("auto_workbench", () -> new BlockAutoWorkbench(
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).strength(2.5F).sound(SoundType.WOOD),
+            () -> BCBlockEntities.AUTO_WORKBENCH.get(), TileAutoWorkbench::new));
 
     // --- Builders -----------------------------------------------------------
 

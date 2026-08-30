@@ -36,6 +36,11 @@
     "block.buildcraft.pump": "Pump",
     "block.buildcraft.mining_well": "Mining Well",
     "block.buildcraft.refinery": "Refinery",
+    "block.buildcraft.distiller": "Distiller",
+    "block.buildcraft.floodgate": "Floodgate",
+    "block.buildcraft.heat_exchanger": "Heat Exchanger",
+    "block.buildcraft.chute": "Chute",
+    "block.buildcraft.auto_workbench": "Automatic Crafting Table",
     "block.buildcraft.quarry": "Quarry",
 
     "block.buildcraft.pipe_wood": "Wooden Transport Pipe",

@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["IcI","ItI","IgI"], "key": { "I": { "item": "minecraft:iron_ingot" }, "c": { "item": "minecraft:copper_ingot" }, "t": { "item": "buildcraft:tank" }, "g": { "item": "buildcraft:gear_iron" } }, "result": { "item": "buildcraft:heat_exchanger" } }

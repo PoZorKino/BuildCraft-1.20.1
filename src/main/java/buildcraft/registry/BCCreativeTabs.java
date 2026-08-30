@@ -51,6 +51,11 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.PUMP.get());
                 output.accept(BCBlocks.MINING_WELL.get());
                 output.accept(BCBlocks.REFINERY.get());
+                output.accept(BCBlocks.DISTILLER.get());
+                output.accept(BCBlocks.FLOODGATE.get());
+                output.accept(BCBlocks.HEAT_EXCHANGER.get());
+                output.accept(BCBlocks.CHUTE.get());
+                output.accept(BCBlocks.AUTO_WORKBENCH.get());
                 output.accept(BCBlocks.QUARRY.get());
                 output.accept(BCBlocks.PIPE_WOOD.get());
                 output.accept(BCBlocks.PIPE_COBBLESTONE.get());

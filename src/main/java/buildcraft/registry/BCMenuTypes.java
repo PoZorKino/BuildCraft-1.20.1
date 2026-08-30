@@ -14,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
 import buildcraft.energy.menu.EngineMenu;
+import buildcraft.factory.menu.AutoWorkbenchMenu;
 import buildcraft.silicon.menu.AssemblyMenu;
 
 public final class BCMenuTypes {
@@ -25,6 +26,9 @@ public final class BCMenuTypes {
 
     public static final RegistryObject<MenuType<AssemblyMenu>> ASSEMBLY_TABLE =
             MENUS.register("assembly_table", () -> IForgeMenuType.create(AssemblyMenu::new));
+
+    public static final RegistryObject<MenuType<AutoWorkbenchMenu>> AUTO_WORKBENCH =
+            MENUS.register("auto_workbench", () -> IForgeMenuType.create(AutoWorkbenchMenu::new));
 
     public static void register(IEventBus modBus) {
         MENUS.register(modBus);
