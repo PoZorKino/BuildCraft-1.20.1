@@ -26,6 +26,10 @@
     "block.buildcraft.mining_well": "Mining Well",
     "block.buildcraft.quarry": "Quarry",
 
+    "block.buildcraft.pipe_wood": "Wooden Transport Pipe",
+    "block.buildcraft.pipe_cobblestone": "Cobblestone Transport Pipe",
+    "block.buildcraft.pipe_gold": "Gold Transport Pipe",
+
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
     "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",

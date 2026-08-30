@@ -20,6 +20,8 @@ import buildcraft.energy.tile.TileEngineWood;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileTank;
+import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeWood;
 
 public final class BCBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
@@ -56,6 +58,20 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileQuarry>> QUARRY =
             BLOCK_ENTITIES.register("quarry", () -> BlockEntityType.Builder
                     .of(TileQuarry::new, BCBlocks.QUARRY.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipe>> PIPE_COBBLESTONE =
+            BLOCK_ENTITIES.register("pipe_cobblestone", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TilePipe(BCBlockEntities.PIPE_COBBLESTONE.get(), pos, state, 8),
+                            BCBlocks.PIPE_COBBLESTONE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipe>> PIPE_GOLD =
+            BLOCK_ENTITIES.register("pipe_gold", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4),
+                            BCBlocks.PIPE_GOLD.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipeWood>> PIPE_WOOD =
+            BLOCK_ENTITIES.register("pipe_wood", () -> BlockEntityType.Builder
+                    .of(TilePipeWood::new, BCBlocks.PIPE_WOOD.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITIES.register(modBus);

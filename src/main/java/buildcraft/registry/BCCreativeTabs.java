@@ -40,6 +40,9 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.PUMP.get());
                 output.accept(BCBlocks.MINING_WELL.get());
                 output.accept(BCBlocks.QUARRY.get());
+                output.accept(BCBlocks.PIPE_WOOD.get());
+                output.accept(BCBlocks.PIPE_COBBLESTONE.get());
+                output.accept(BCBlocks.PIPE_GOLD.get());
             })
             .build());
 

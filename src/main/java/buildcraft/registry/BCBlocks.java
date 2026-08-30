@@ -5,8 +5,10 @@
  */
 package buildcraft.registry;
 
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -31,6 +33,9 @@ import buildcraft.factory.block.BlockTank;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileTank;
+import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeWood;
 
 /** All blocks (and their block items) ported from BuildCraft. */
 public final class BCBlocks {
@@ -67,6 +72,29 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> QUARRY = register("quarry", () -> new BlockQuarry(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    // --- Transport (pipes) --------------------------------------------------
+
+    public static final RegistryObject<Block> PIPE_COBBLESTONE = registerPipe("pipe_cobblestone",
+            () -> BCBlockEntities.PIPE_COBBLESTONE.get(),
+            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_COBBLESTONE.get(), pos, state, 8));
+
+    public static final RegistryObject<Block> PIPE_GOLD = registerPipe("pipe_gold",
+            () -> BCBlockEntities.PIPE_GOLD.get(),
+            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4));
+
+    public static final RegistryObject<Block> PIPE_WOOD = registerPipe("pipe_wood",
+            () -> BCBlockEntities.PIPE_WOOD.get(), TilePipeWood::new);
+
+    private static <T extends TilePipe> RegistryObject<Block> registerPipe(String name,
+            Supplier<net.minecraft.world.level.block.entity.BlockEntityType<T>> type,
+            BiFunction<BlockPos, net.minecraft.world.level.block.state.BlockState, T> factory) {
+        RegistryObject<Block> block = BLOCKS.register(name, () -> new BlockPipe<>(
+                BlockBehaviour.Properties.of().strength(0.3F).sound(SoundType.STONE).noOcclusion(),
+                type, factory));
+        BCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return block;
+    }
 
     private static RegistryObject<Block> register(String name, Supplier<Block> block) {
         RegistryObject<Block> obj = BLOCKS.register(name, block);
