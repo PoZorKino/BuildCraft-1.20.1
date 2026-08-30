@@ -14,6 +14,7 @@ import buildcraft.energy.fluid.BCFluids;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.registry.BCBlocks;
 import buildcraft.registry.BCCreativeTabs;
+import buildcraft.registry.BCEntities;
 import buildcraft.registry.BCItems;
 import buildcraft.registry.BCMenuTypes;
 
@@ -35,6 +36,7 @@ public class BuildCraft {
         BCBlockEntities.register(modBus);
         BCMenuTypes.register(modBus);
         BCFluids.register(modBus);
+        BCEntities.register(modBus);
         BCCreativeTabs.register(modBus);
 
         BuildCraftClient.init(modBus);

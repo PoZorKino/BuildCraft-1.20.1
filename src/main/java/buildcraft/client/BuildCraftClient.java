@@ -46,6 +46,8 @@ public final class BuildCraftClient {
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
                 buildcraft.silicon.client.LaserRenderer::new);
+        event.registerEntityRenderer(buildcraft.registry.BCEntities.ROBOT.get(),
+                buildcraft.robotics.client.RobotRenderer::new);
     }
 
     private static Block[] engines() {

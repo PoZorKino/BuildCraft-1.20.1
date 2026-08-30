@@ -37,7 +37,8 @@ public final class BCItems {
             ITEMS.register("template", () -> new Item(new Item.Properties().stacksTo(1)));
 
     // Robotics: robot and programming boards.
-    public static final RegistryObject<Item> ROBOT = simple("robot");
+    public static final RegistryObject<Item> ROBOT =
+            ITEMS.register("robot", () -> new buildcraft.robotics.item.ItemRobot(new Item.Properties().stacksTo(16)));
     public static final RegistryObject<Item> BOARD_BLANK = simple("board_blank");
     public static final RegistryObject<Item> BOARD_RED = simple("board_red");
     public static final RegistryObject<Item> BOARD_GREEN = simple("board_green");
