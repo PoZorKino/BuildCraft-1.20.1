@@ -41,4 +41,14 @@ public class TileEngineWood extends TileEngineBase {
     public int getPowerStage() {
         return Math.min(3, super.getPowerStage());
     }
+
+    @Override
+    protected boolean canOverheat() {
+        return false;
+    }
+
+    @Override
+    protected boolean isActivelyGenerating() {
+        return level != null && isRedstonePowered(level, worldPosition);
+    }
 }

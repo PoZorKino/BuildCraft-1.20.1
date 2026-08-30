@@ -32,6 +32,9 @@ public class ItemRobot extends Item {
             RobotEntity robot = BCEntities.ROBOT.get().create(serverLevel);
             if (robot != null) {
                 robot.moveTo(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0.0F, 0.0F);
+                if (context.getPlayer() != null) {
+                    robot.setOwner(context.getPlayer().getUUID());
+                }
                 serverLevel.addFreshEntity(robot);
                 ItemStack stack = context.getItemInHand();
                 if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild) {

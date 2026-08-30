@@ -28,6 +28,9 @@ public class OilFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        if (!buildcraft.config.BCConfig.oilWorldgen()) {
+            return false;
+        }
         WorldGenLevel level = context.level();
         BlockPos surface = context.origin();
 

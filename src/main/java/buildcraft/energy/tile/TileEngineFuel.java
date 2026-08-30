@@ -122,6 +122,11 @@ public abstract class TileEngineFuel extends TileEngineBase implements MenuProvi
     }
 
     @Override
+    protected boolean isActivelyGenerating() {
+        return isBurning();
+    }
+
+    @Override
     public void dropContents(Level level, BlockPos pos) {
         SimpleContainer container = new SimpleContainer(1);
         container.setItem(0, fuel.getStackInSlot(0));
