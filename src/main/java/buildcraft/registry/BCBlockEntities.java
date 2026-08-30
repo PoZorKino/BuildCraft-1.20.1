@@ -19,6 +19,7 @@ import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
+import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
 import buildcraft.transport.tile.TilePipe;
 import buildcraft.transport.tile.TilePipeWood;
@@ -54,6 +55,10 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileMiningWell>> MINING_WELL =
             BLOCK_ENTITIES.register("mining_well", () -> BlockEntityType.Builder
                     .of(TileMiningWell::new, BCBlocks.MINING_WELL.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileRefinery>> REFINERY =
+            BLOCK_ENTITIES.register("refinery", () -> BlockEntityType.Builder
+                    .of(TileRefinery::new, BCBlocks.REFINERY.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileQuarry>> QUARRY =
             BLOCK_ENTITIES.register("quarry", () -> BlockEntityType.Builder

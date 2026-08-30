@@ -24,6 +24,7 @@
     "block.buildcraft.tank": "Tank",
     "block.buildcraft.pump": "Pump",
     "block.buildcraft.mining_well": "Mining Well",
+    "block.buildcraft.refinery": "Refinery",
     "block.buildcraft.quarry": "Quarry",
 
     "block.buildcraft.pipe_wood": "Wooden Transport Pipe",
@@ -33,5 +34,6 @@
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
     "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",
-    "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)"
+    "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)",
+    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE"
 }

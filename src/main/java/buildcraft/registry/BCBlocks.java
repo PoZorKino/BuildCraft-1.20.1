@@ -29,9 +29,11 @@ import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
 import buildcraft.factory.block.BlockMachine;
+import buildcraft.factory.block.BlockRefinery;
 import buildcraft.factory.block.BlockTank;
 import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
+import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
 import buildcraft.transport.block.BlockPipe;
 import buildcraft.transport.tile.TilePipe;
@@ -67,6 +69,10 @@ public final class BCBlocks {
     public static final RegistryObject<Block> MINING_WELL = register("mining_well", () -> new BlockMachine<>(
             BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
             () -> BCBlockEntities.MINING_WELL.get(), TileMiningWell::new));
+
+    public static final RegistryObject<Block> REFINERY = register("refinery", () -> new BlockRefinery(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.REFINERY.get(), TileRefinery::new));
 
     // --- Builders -----------------------------------------------------------
 
