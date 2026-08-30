@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["ccc"," g ","cwc"], "key": { "c": { "item": "minecraft:cobblestone" }, "g": { "item": "minecraft:glass" }, "w": { "item": "buildcraft:gear_wood" } }, "result": { "item": "buildcraft:engine_stone" } }

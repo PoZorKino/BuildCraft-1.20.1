@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) 2017 SpaceToad and the BuildCraft team
+ * This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not
+ * distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/
+ */
+package buildcraft.registry;
+
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.RegistryObject;
+
+import buildcraft.BuildCraft;
+
+public final class BCCreativeTabs {
+    public static final DeferredRegister<CreativeModeTab> TABS =
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BuildCraft.MOD_ID);
+
+    public static final RegistryObject<CreativeModeTab> MAIN = TABS.register("main", () -> CreativeModeTab.builder()
+            .title(Component.translatable("itemGroup.buildcraft"))
+            .icon(() -> new ItemStack(BCItems.WRENCH.get()))
+            .displayItems((params, output) -> {
+                output.accept(BCItems.GEAR_WOOD.get());
+                output.accept(BCItems.GEAR_STONE.get());
+                output.accept(BCItems.GEAR_IRON.get());
+                output.accept(BCItems.GEAR_GOLD.get());
+                output.accept(BCItems.GEAR_DIAMOND.get());
+                output.accept(BCItems.WRENCH.get());
+                output.accept(BCBlocks.ENGINE_STONE.get());
+            })
+            .build());
+
+    public static void register(IEventBus modBus) {
+        TABS.register(modBus);
+    }
+
+    private BCCreativeTabs() {}
+}

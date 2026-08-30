@@ -23,6 +23,10 @@ libs
 #runtime
 run
 run_server
+run-data
+run_client.log
+mcmodsrepo
+src/generated
 
 #mac
 .DS_Store

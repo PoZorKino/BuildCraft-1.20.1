@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "misc", "pattern": [" o ","oio"," o "], "key": { "o": { "item": "minecraft:gold_ingot" }, "i": { "item": "buildcraft:gear_iron" } }, "result": { "item": "buildcraft:gear_gold" } }
