@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "tools", "pattern": ["I I"," G "," I "], "key": { "I": { "item": "minecraft:iron_ingot" }, "G": { "item": "buildcraft:gear_stone" } }, "result": { "item": "buildcraft:wrench" } }

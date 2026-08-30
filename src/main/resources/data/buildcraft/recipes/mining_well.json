@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["IgI","IpI","IrI"], "key": { "I": { "item": "minecraft:iron_ingot" }, "g": { "item": "buildcraft:gear_iron" }, "p": { "item": "minecraft:iron_pickaxe" }, "r": { "item": "minecraft:redstone" } }, "result": { "item": "buildcraft:mining_well" } }

@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["III"," g ","IbI"], "key": { "I": { "item": "minecraft:iron_ingot" }, "g": { "item": "buildcraft:gear_iron" }, "b": { "item": "minecraft:bucket" } }, "result": { "item": "buildcraft:pump" } }

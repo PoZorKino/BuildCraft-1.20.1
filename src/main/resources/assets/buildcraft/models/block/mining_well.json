@@ -1,0 +1,12 @@
+{
+    "parent": "minecraft:block/cube",
+    "textures": {
+        "up": "buildcraft:block/mining_well_top",
+        "down": "buildcraft:block/mining_well_bottom",
+        "north": "buildcraft:block/mining_well_front",
+        "south": "buildcraft:block/mining_well_back",
+        "east": "buildcraft:block/mining_well_side",
+        "west": "buildcraft:block/mining_well_side",
+        "particle": "buildcraft:block/mining_well_side"
+    }
+}

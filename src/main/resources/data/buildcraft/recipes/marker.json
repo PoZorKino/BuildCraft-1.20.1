@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["r","l"], "key": { "r": { "item": "minecraft:redstone" }, "l": { "item": "minecraft:stone" } }, "result": { "item": "buildcraft:marker", "count": 4 } }

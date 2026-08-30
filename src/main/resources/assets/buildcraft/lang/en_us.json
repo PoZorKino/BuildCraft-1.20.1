@@ -1,0 +1,66 @@
+{
+    "itemGroup.buildcraft": "BuildCraft",
+
+    "item.buildcraft.gear_wood": "Wood Gear",
+    "item.buildcraft.gear_stone": "Stone Gear",
+    "item.buildcraft.gear_iron": "Iron Gear",
+    "item.buildcraft.gear_gold": "Gold Gear",
+    "item.buildcraft.gear_diamond": "Diamond Gear",
+    "item.buildcraft.diamond_shard": "Diamond Shard",
+    "item.buildcraft.chipset_redstone": "Redstone Chipset",
+    "item.buildcraft.chipset_iron": "Iron Chipset",
+    "item.buildcraft.chipset_gold": "Gold Chipset",
+    "item.buildcraft.chipset_diamond": "Diamond Chipset",
+    "item.buildcraft.chipset_quartz": "Quartz Chipset",
+    "item.buildcraft.template": "Template",
+    "item.buildcraft.robot": "Robot",
+    "item.buildcraft.board_blank": "Blank Redstone Board",
+    "item.buildcraft.board_red": "Red Redstone Board",
+    "item.buildcraft.board_green": "Green Redstone Board",
+    "item.buildcraft.board_blue": "Blue Redstone Board",
+    "item.buildcraft.wrench": "Wrench",
+
+    "block.buildcraft.engine_wood": "Redstone Engine",
+    "block.buildcraft.engine_stone": "Stirling Engine",
+    "block.buildcraft.engine_iron": "Combustion Engine",
+    "block.buildcraft.engine_creative": "Creative Engine",
+
+    "block.buildcraft.oil": "Oil",
+    "block.buildcraft.fuel": "Fuel",
+    "fluid_type.buildcraft.oil": "Oil",
+    "fluid_type.buildcraft.fuel": "Fuel",
+    "item.buildcraft.bucket_oil": "Oil Bucket",
+    "item.buildcraft.bucket_fuel": "Fuel Bucket",
+
+    "block.buildcraft.tank": "Tank",
+    "block.buildcraft.pump": "Pump",
+    "block.buildcraft.mining_well": "Mining Well",
+    "block.buildcraft.refinery": "Refinery",
+    "block.buildcraft.quarry": "Quarry",
+
+    "block.buildcraft.pipe_wood": "Wooden Transport Pipe",
+    "block.buildcraft.pipe_cobblestone": "Cobblestone Transport Pipe",
+    "block.buildcraft.pipe_stone": "Stone Transport Pipe",
+    "block.buildcraft.pipe_gold": "Gold Transport Pipe",
+    "block.buildcraft.pipe_fluid_wood": "Wooden Fluid Pipe",
+    "block.buildcraft.pipe_fluid_cobblestone": "Cobblestone Fluid Pipe",
+    "block.buildcraft.pipe_power_wood": "Wooden Kinesis Pipe",
+    "block.buildcraft.pipe_power_cobblestone": "Cobblestone Kinesis Pipe",
+
+    "block.buildcraft.assembly_table": "Assembly Table",
+    "block.buildcraft.laser": "Laser",
+
+    "block.buildcraft.architect": "Architect Table",
+    "block.buildcraft.builder": "Builder",
+    "block.buildcraft.filler": "Filler",
+    "block.buildcraft.marker": "Land Marker",
+
+    "block.buildcraft.robot_station": "Robot Station",
+    "block.buildcraft.zone_planner": "Zone Planner",
+
+    "message.buildcraft.tank.empty": "Tank is empty",
+    "message.buildcraft.tank.contents": "%s / %s mB of %s",
+    "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",
+    "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)",
+    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE"
+}

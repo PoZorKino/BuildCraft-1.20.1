@@ -1,0 +1,65 @@
+{
+    "multipart": [
+        {
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_center"
+            }
+        },
+        {
+            "when": {
+                "up": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm"
+            }
+        },
+        {
+            "when": {
+                "down": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm",
+                "x": 180
+            }
+        },
+        {
+            "when": {
+                "south": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm",
+                "x": 90
+            }
+        },
+        {
+            "when": {
+                "west": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm",
+                "x": 90,
+                "y": 90
+            }
+        },
+        {
+            "when": {
+                "north": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm",
+                "x": 90,
+                "y": 180
+            }
+        },
+        {
+            "when": {
+                "east": "true"
+            },
+            "apply": {
+                "model": "buildcraft:block/pipe_gold_arm",
+                "x": 90,
+                "y": 270
+            }
+        }
+    ]
+}

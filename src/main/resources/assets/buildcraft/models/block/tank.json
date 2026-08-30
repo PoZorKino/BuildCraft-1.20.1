@@ -1,0 +1,9 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "buildcraft:block/tank_end",
+        "bottom": "buildcraft:block/tank_end",
+        "side": "buildcraft:block/tank_side",
+        "particle": "buildcraft:block/tank_side"
+    }
+}

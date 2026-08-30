@@ -1,0 +1,79 @@
+{
+    "textures": {
+        "particle": "buildcraft:block/engine_creative_side",
+        "side": "buildcraft:block/engine_creative_side",
+        "back": "buildcraft:block/engine_creative_back",
+        "chamber": "buildcraft:block/engine_chamber",
+        "trunk": "buildcraft:block/engine_trunk"
+    },
+    "elements": [
+        {
+            "name": "chamber",
+            "from": [
+                2,
+                0,
+                2
+            ],
+            "to": [
+                14,
+                10,
+                14
+            ],
+            "faces": {
+                "down": {
+                    "texture": "#back",
+                    "cullface": "down"
+                },
+                "up": {
+                    "texture": "#chamber"
+                },
+                "north": {
+                    "texture": "#side"
+                },
+                "south": {
+                    "texture": "#side"
+                },
+                "west": {
+                    "texture": "#side"
+                },
+                "east": {
+                    "texture": "#side"
+                }
+            }
+        },
+        {
+            "name": "trunk",
+            "from": [
+                4,
+                10,
+                4
+            ],
+            "to": [
+                12,
+                16,
+                12
+            ],
+            "faces": {
+                "up": {
+                    "texture": "#chamber"
+                },
+                "north": {
+                    "texture": "#trunk",
+                    "tintindex": 1
+                },
+                "south": {
+                    "texture": "#trunk",
+                    "tintindex": 1
+                },
+                "west": {
+                    "texture": "#trunk",
+                    "tintindex": 1
+                },
+                "east": {
+                    "texture": "#trunk",
+                    "tintindex": 1
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    "textures": {
+        "t": "buildcraft:block/pipe_cobblestone",
+        "particle": "buildcraft:block/pipe_cobblestone"
+    },
+    "elements": [
+        {
+            "from": [
+                4,
+                12,
+                4
+            ],
+            "to": [
+                12,
+                16,
+                12
+            ],
+            "faces": {
+                "down": {
+                    "texture": "#t"
+                },
+                "up": {
+                    "texture": "#t"
+                },
+                "north": {
+                    "texture": "#t"
+                },
+                "south": {
+                    "texture": "#t"
+                },
+                "west": {
+                    "texture": "#t"
+                },
+                "east": {
+                    "texture": "#t"
+                }
+            }
+        }
+    ]
+}

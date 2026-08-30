@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["ppp","dGr","ppp"], "key": { "p": { "item": "minecraft:cobblestone" }, "d": { "item": "minecraft:diamond" }, "G": { "item": "buildcraft:gear_gold" }, "r": { "item": "minecraft:redstone" } }, "result": { "item": "buildcraft:laser" } }
