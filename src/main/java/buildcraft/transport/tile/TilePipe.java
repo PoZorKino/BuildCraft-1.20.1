@@ -158,7 +158,7 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         for (TravelingItem ti : items) {
             CompoundTag entry = new CompoundTag();
             entry.put("stack", ti.stack.save(new CompoundTag()));
-            entry.putInt("from", ti.from.get3DDataValue());
+            entry.put("from", buildcraft.lib.nbt.NBTUtilBC.writeDirection(ti.from));
             entry.putInt("age", ti.age);
             list.add(entry);
         }
@@ -173,7 +173,10 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         for (int i = 0; i < list.size(); i++) {
             CompoundTag entry = list.getCompound(i);
             ItemStack stack = ItemStack.of(entry.getCompound("stack"));
-            Direction from = Direction.from3DDataValue(entry.getInt("from"));
+            Direction from = buildcraft.lib.nbt.NBTUtilBC.readDirection(entry.get("from"));
+            if (from == null) {
+                from = Direction.DOWN;
+            }
             items.add(new TravelingItem(stack, from, entry.getInt("age")));
         }
     }
