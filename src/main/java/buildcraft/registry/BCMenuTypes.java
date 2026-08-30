@@ -17,6 +17,7 @@ import buildcraft.energy.menu.EngineMenu;
 import buildcraft.factory.menu.AutoWorkbenchMenu;
 import buildcraft.silicon.menu.AssemblyMenu;
 import buildcraft.silicon.menu.SiliconTableMenu;
+import buildcraft.transport.menu.DiamondPipeMenu;
 
 public final class BCMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
@@ -36,6 +37,9 @@ public final class BCMenuTypes {
 
     public static final RegistryObject<MenuType<SiliconTableMenu>> PROGRAMMING_TABLE =
             MENUS.register("programming_table", () -> IForgeMenuType.create(SiliconTableMenu::programming));
+
+    public static final RegistryObject<MenuType<DiamondPipeMenu>> PIPE_DIAMOND =
+            MENUS.register("pipe_diamond", () -> IForgeMenuType.create(DiamondPipeMenu::new));
 
     public static void register(IEventBus modBus) {
         MENUS.register(modBus);

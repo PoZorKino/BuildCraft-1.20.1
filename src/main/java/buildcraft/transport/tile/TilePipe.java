@@ -111,33 +111,47 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         return transitTicks;
     }
 
-    private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
+    /**
+     * Candidate exit faces, in preference order. Default: every connected face except the entry,
+     * then bounce back as a last resort. Subclasses (iron / diamond) override this to restrict routing.
+     */
+    protected List<Direction> collectOutputs(BlockState state, TravelingItem ti) {
         List<Direction> outputs = new ArrayList<>();
         for (Direction dir : Direction.values()) {
             if (BlockPipe.isConnected(state, dir) && dir != ti.from) {
                 outputs.add(dir);
             }
         }
-        // Prefer forward directions, but allow bouncing back if nothing else works.
         if (BlockPipe.isConnected(state, ti.from)) {
             outputs.add(ti.from);
         }
-        for (Direction dir : outputs) {
-            BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
-            if (neighbor instanceof TilePipe pipe) {
-                pipe.accept(ti.stack, dir.getOpposite());
+        return outputs;
+    }
+
+    private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
+        for (Direction dir : collectOutputs(state, ti)) {
+            if (trySend(level, pos, dir, ti) && ti.stack.isEmpty()) {
                 return true;
             }
-            if (neighbor != null) {
-                IItemHandler handler = neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
-                if (handler != null) {
-                    ItemStack leftover = ItemHandlerHelper.insertItem(handler, ti.stack, false);
-                    if (leftover.getCount() != ti.stack.getCount()) {
-                        ti.stack = leftover;
-                        if (leftover.isEmpty()) {
-                            return true;
-                        }
-                    }
+        }
+        return ti.stack.isEmpty();
+    }
+
+    /** Attempt to hand {@code ti} to the neighbour in {@code dir}. Updates the leftover stack. */
+    protected boolean trySend(Level level, BlockPos pos, Direction dir, TravelingItem ti) {
+        BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+        if (neighbor instanceof TilePipe pipe) {
+            pipe.accept(ti.stack, dir.getOpposite());
+            ti.stack = ItemStack.EMPTY;
+            return true;
+        }
+        if (neighbor != null) {
+            IItemHandler handler = neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
+            if (handler != null) {
+                ItemStack leftover = ItemHandlerHelper.insertItem(handler, ti.stack, false);
+                if (leftover.getCount() != ti.stack.getCount()) {
+                    ti.stack = leftover;
+                    return leftover.isEmpty();
                 }
             }
         }

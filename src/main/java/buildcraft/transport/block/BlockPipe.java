@@ -12,6 +12,11 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,9 +30,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.network.NetworkHooks;
 
 import buildcraft.factory.tile.ITickingMachine;
+import buildcraft.transport.tile.TilePipeDiamond;
 
 /**
  * A transport pipe block. Reuses vanilla {@link PipeBlock}'s six boolean connection properties and
@@ -96,6 +104,32 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
         }
         BlockEntity be = level.getBlockEntity(neighborPos);
         return be != null && be.getCapability(connectCap.get(), dir.getOpposite()).isPresent();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+            InteractionHand hand, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof MenuProvider provider) {
+            if (!level.isClientSide && player instanceof ServerPlayer sp) {
+                NetworkHooks.openScreen(sp, provider, pos);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof TilePipeDiamond diamond) {
+                diamond.dropContents(level, pos);
+            }
+        }
+        super.onRemove(state, level, pos, newState, moving);
     }
 
     @Override

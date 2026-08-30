@@ -44,6 +44,10 @@ public final class BuildCraftClient {
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_GOLD.get(),
                 buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_IRON.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_DIAMOND.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_OBSIDIAN.get(),
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
@@ -72,6 +76,8 @@ public final class BuildCraftClient {
                     buildcraft.silicon.client.SiliconTableScreen::new);
             MenuScreens.register(BCMenuTypes.PROGRAMMING_TABLE.get(),
                     buildcraft.silicon.client.SiliconTableScreen::new);
+            MenuScreens.register(BCMenuTypes.PIPE_DIAMOND.get(),
+                    buildcraft.transport.client.DiamondPipeScreen::new);
             net.minecraft.client.renderer.item.ItemProperties.register(
                     buildcraft.registry.BCItems.TEMPLATE.get(),
                     new net.minecraft.resources.ResourceLocation(buildcraft.BuildCraft.MOD_ID, "used"),

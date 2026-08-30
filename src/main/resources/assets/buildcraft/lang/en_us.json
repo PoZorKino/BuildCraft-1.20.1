@@ -47,6 +47,8 @@
     "block.buildcraft.pipe_cobblestone": "Cobblestone Transport Pipe",
     "block.buildcraft.pipe_stone": "Stone Transport Pipe",
     "block.buildcraft.pipe_gold": "Gold Transport Pipe",
+    "block.buildcraft.pipe_iron": "Iron Transport Pipe",
+    "block.buildcraft.pipe_diamond": "Diamond Transport Pipe",
     "block.buildcraft.pipe_obsidian": "Obsidian Transport Pipe",
     "block.buildcraft.pipe_void": "Void Transport Pipe",
     "block.buildcraft.pipe_fluid_wood": "Wooden Fluid Pipe",
@@ -87,5 +89,14 @@
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
     "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",
     "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)",
-    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE"
+    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE",
+
+    "message.buildcraft.pipe.iron.facing": "Iron pipe facing %s",
+    "message.buildcraft.pipe.iron.none": "Iron pipe has no connected output",
+    "direction.buildcraft.down": "Down",
+    "direction.buildcraft.up": "Up",
+    "direction.buildcraft.north": "North",
+    "direction.buildcraft.south": "South",
+    "direction.buildcraft.west": "West",
+    "direction.buildcraft.east": "East"
 }
