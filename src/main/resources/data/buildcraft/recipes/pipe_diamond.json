@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["cgc"], "key": {"c": {"item": "minecraft:diamond"}, "g": {"item": "minecraft:glass"}}, "result": {"item": "buildcraft:pipe_diamond", "count": 8}}

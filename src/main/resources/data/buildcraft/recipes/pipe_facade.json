@@ -1,0 +1,1 @@
+{"type": "minecraft:crafting_shaped", "category": "misc", "pattern": [" P ", "P P", " P "], "key": {"P": {"item": "minecraft:paper"}}, "result": {"item": "buildcraft:pipe_facade", "count": 6}}

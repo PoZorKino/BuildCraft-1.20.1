@@ -24,6 +24,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 
+import buildcraft.config.BCConfig;
 import buildcraft.energy.block.BlockEngine;
 import buildcraft.energy.util.EngineEnergyStorage;
 
@@ -36,6 +37,8 @@ public abstract class TileEngineBase extends BlockEntity {
 
     protected final EngineEnergyStorage energy;
     private final LazyOptional<IEnergyStorage> energyCap;
+    private int overheatTicks;
+    private boolean pumping;
 
     protected TileEngineBase(BlockEntityType<?> type, BlockPos pos, BlockState state,
             int capacity, int maxOutput) {
@@ -45,10 +48,65 @@ public abstract class TileEngineBase extends BlockEntity {
     }
 
     public final void serverTick(Level level, BlockPos pos, BlockState state) {
+        int beforeEnergy = energy.getEnergyStored();
+        boolean beforePumping = pumping;
+        int beforeStage = getPowerStage();
         tickEngine(level, pos, state);
+        pumping = energy.getEnergyStored() > beforeEnergy || isActivelyGenerating();
         pushEnergy(level, pos, state);
-        setChanged();
-        level.sendBlockUpdated(pos, state, state, 3);
+        tickOverheat(level, pos);
+        if (energy.getEnergyStored() != beforeEnergy) {
+            setChanged();
+        }
+        if (pumping != beforePumping || getPowerStage() != beforeStage) {
+            setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
+        }
+    }
+
+    /** Subclasses that never explode (wood / creative) override this. */
+    protected boolean canOverheat() {
+        return true;
+    }
+
+    /** True while the engine is producing energy this tick (fuel burning, redstone, etc.). */
+    protected boolean isActivelyGenerating() {
+        return false;
+    }
+
+    private void tickOverheat(Level level, BlockPos pos) {
+        if (!canOverheat() || !BCConfig.engineExplosions()) {
+            overheatTicks = 0;
+            return;
+        }
+        if (getPowerStage() >= 4 && pumping) {
+            overheatTicks++;
+            if (overheatTicks >= BCConfig.overheatTicks()) {
+                level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+                        BCConfig.explosionPower(), Level.ExplosionInteraction.BLOCK);
+            }
+        } else {
+            overheatTicks = 0;
+        }
+    }
+
+    public boolean isPumping() {
+        return pumping;
+    }
+
+    /** 0..1 piston extension used by the trunk renderer. */
+    public float getPistonExtension(float partialTick) {
+        if (!pumping || getPowerStage() >= 4) {
+            return 0.0F;
+        }
+        float speed = switch (getPowerStage()) {
+            case 0 -> 0.15F;
+            case 1 -> 0.25F;
+            case 2 -> 0.40F;
+            default -> 0.55F;
+        };
+        float time = (getLevel() == null ? 0 : getLevel().getGameTime()) + partialTick;
+        return 0.5F + 0.5F * (float) Math.sin(time * speed);
     }
 
     /** Subclasses generate energy here (into {@link #energy}). */
@@ -110,6 +168,9 @@ public abstract class TileEngineBase extends BlockEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null && side != getBlockState().getValue(BlockEngine.FACING)) {
+                return LazyOptional.empty();
+            }
             return energyCap.cast();
         }
         return super.getCapability(cap, side);
@@ -127,12 +188,16 @@ public abstract class TileEngineBase extends BlockEntity {
     protected void saveAdditional(CompoundTag tag) {
         super.saveAdditional(tag);
         tag.putInt("energy", energy.getEnergyStored());
+        tag.putInt("overheatTicks", overheatTicks);
+        tag.putBoolean("pumping", pumping);
     }
 
     @Override
     public void load(CompoundTag tag) {
         super.load(tag);
         energy.setEnergyStored(tag.getInt("energy"));
+        overheatTicks = tag.getInt("overheatTicks");
+        pumping = tag.getBoolean("pumping");
     }
 
     @Override

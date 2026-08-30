@@ -66,19 +66,46 @@ public class TileBuilder extends BlockEntity implements ITickingMachine, Templat
         while (buildIndex < data.volume()) {
             BlockState toPlace = data.stateAt(buildIndex);
             BlockPos target = origin.offset(data.offsetFor(buildIndex));
-            buildIndex++;
-            if (toPlace == null || target.equals(getBlockPos())) {
+            if (toPlace == null || target.equals(getBlockPos()) || !level.getBlockState(target).canBeReplaced()) {
+                buildIndex++;
                 continue;
             }
-            if (level.getBlockState(target).canBeReplaced()) {
-                level.setBlock(target, toPlace, 3);
-                energy.spend(BUILD_COST);
-                cooldown = BUILD_INTERVAL;
-                setChanged();
+            if (!consumeMaterial(level, pos, toPlace)) {
                 return;
             }
+            level.setBlock(target, toPlace, 3);
+            buildIndex++;
+            energy.spend(BUILD_COST);
+            cooldown = BUILD_INTERVAL;
+            setChanged();
+            return;
         }
         setChanged();
+    }
+
+    /** Pull one matching block item from a neighbouring inventory. */
+    private boolean consumeMaterial(Level level, BlockPos pos, BlockState toPlace) {
+        net.minecraft.world.item.Item wanted = toPlace.getBlock().asItem();
+        if (wanted == net.minecraft.world.item.Items.AIR) {
+            return true;
+        }
+        for (Direction dir : Direction.values()) {
+            BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+            if (neighbor == null) {
+                continue;
+            }
+            net.minecraftforge.items.IItemHandler handler =
+                    neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
+            if (handler == null) {
+                continue;
+            }
+            for (int slot = 0; slot < handler.getSlots(); slot++) {
+                if (handler.getStackInSlot(slot).is(wanted) && !handler.extractItem(slot, 1, false).isEmpty()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

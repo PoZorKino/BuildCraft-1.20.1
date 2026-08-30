@@ -83,15 +83,26 @@ public class TilePump extends BlockEntity implements ITickingMachine {
                 y--;
                 continue;
             }
+            BlockState targetState = level.getBlockState(target);
+            if (!(targetState.getBlock() instanceof net.minecraft.world.level.block.LiquidBlock)
+                    && !targetState.canBeReplaced()) {
+                y--;
+                continue;
+            }
             Fluid fluid = fluidState.getType();
             FluidStack drained = new FluidStack(fluid, 1000);
-            if (tank.fill(drained, IFluidHandler.FluidAction.SIMULATE) == 1000 && energy.spend(COST_PER_BUCKET)) {
-                tank.fill(drained, IFluidHandler.FluidAction.EXECUTE);
-                level.setBlock(target, Blocks.AIR.defaultBlockState(), 3);
-                nextY = y - 1;
-                cooldown = PUMP_INTERVAL;
-                setChanged();
+            if (tank.fill(drained, IFluidHandler.FluidAction.SIMULATE) != 1000) {
+                y--;
+                continue;
             }
+            if (!energy.spend(COST_PER_BUCKET)) {
+                return;
+            }
+            tank.fill(drained, IFluidHandler.FluidAction.EXECUTE);
+            level.setBlock(target, Blocks.AIR.defaultBlockState(), 3);
+            nextY = y - 1;
+            cooldown = PUMP_INTERVAL;
+            setChanged();
             return;
         }
         // Nothing left in this column; keep the last position so it stops scanning uselessly.

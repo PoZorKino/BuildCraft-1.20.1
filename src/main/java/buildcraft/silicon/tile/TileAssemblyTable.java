@@ -113,6 +113,8 @@ public class TileAssemblyTable extends BlockEntity implements MenuProvider, ITic
 
     private int progress;
     private int cost = 1;
+    @Nullable
+    private Recipe lastRecipe;
 
     private final ContainerData data = new ContainerData() {
         @Override public int get(int index) {
@@ -145,9 +147,14 @@ public class TileAssemblyTable extends BlockEntity implements MenuProvider, ITic
         if (recipe == null) {
             if (progress != 0) {
                 progress = 0;
+                lastRecipe = null;
                 setChanged();
             }
             return;
+        }
+        if (recipe != lastRecipe) {
+            progress = 0;
+            lastRecipe = recipe;
         }
         cost = recipe.cost;
         ItemStack result = recipe.output.get();

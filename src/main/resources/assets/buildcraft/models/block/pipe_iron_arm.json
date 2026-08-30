@@ -1,0 +1,46 @@
+{
+    "textures": {
+        "t": "buildcraft:block/pipe_iron",
+        "particle": "buildcraft:block/pipe_iron"
+    },
+    "elements": [
+        {
+            "from": [
+                4,
+                12,
+                4
+            ],
+            "to": [
+                12,
+                16,
+                12
+            ],
+            "faces": {
+                "down": {
+                    "texture": "#t"
+                , "tintindex": 0
+                },
+                "up": {
+                    "texture": "#t"
+                , "tintindex": 0
+                },
+                "north": {
+                    "texture": "#t"
+                , "tintindex": 0
+                },
+                "south": {
+                    "texture": "#t"
+                , "tintindex": 0
+                },
+                "west": {
+                    "texture": "#t"
+                , "tintindex": 0
+                },
+                "east": {
+                    "texture": "#t"
+                , "tintindex": 0
+                }
+            }
+        }
+    ]
+}

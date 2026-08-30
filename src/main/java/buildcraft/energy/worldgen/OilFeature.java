@@ -28,6 +28,9 @@ public class OilFeature extends Feature<NoneFeatureConfiguration> {
 
     @Override
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        if (!buildcraft.config.BCConfig.oilWorldgen()) {
+            return false;
+        }
         WorldGenLevel level = context.level();
         BlockPos surface = context.origin();
 
@@ -49,7 +52,11 @@ public class OilFeature extends Feature<NoneFeatureConfiguration> {
                 for (int dz = -radius; dz <= radius; dz++) {
                     if (dx * dx + dy * dy + dz * dz <= radius * radius) {
                         BlockPos p = center.offset(dx, dy, dz);
-                        if (level.getBlockState(p).isSolid()) {
+                        if (!level.getWorldBorder().isWithinBounds(p) || p.getY() < level.getMinBuildHeight()) {
+                            continue;
+                        }
+                        BlockState existing = level.getBlockState(p);
+                        if (existing.isSolid() && existing.getDestroySpeed(level, p) >= 0) {
                             level.setBlock(p, oil, 2);
                             placed = true;
                         }
@@ -60,7 +67,11 @@ public class OilFeature extends Feature<NoneFeatureConfiguration> {
         // Spout up to the surface.
         for (int y = baseY; y <= surface.getY(); y++) {
             BlockPos p = new BlockPos(surface.getX(), y, surface.getZ());
-            if (level.getBlockState(p).isSolid() || level.getBlockState(p).isAir()) {
+            if (p.getY() < level.getMinBuildHeight() || p.getY() > level.getMaxBuildHeight()) {
+                continue;
+            }
+            BlockState existing = level.getBlockState(p);
+            if ((existing.isSolid() && existing.getDestroySpeed(level, p) >= 0) || existing.isAir()) {
                 level.setBlock(p, oil, 2);
                 placed = true;
             }

@@ -13,11 +13,10 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 
 import buildcraft.transport.tile.TilePipe;
 
-/** Renders the item stacks currently travelling through a pipe, interpolated along the pipe axis. */
+/** Renders travelling items and any plugs / wires / facades attached to a pipe. */
 public class PipeItemRenderer implements BlockEntityRenderer<TilePipe> {
 
     private final ItemRenderer itemRenderer;
@@ -39,7 +38,6 @@ public class PipeItemRenderer implements BlockEntityRenderer<TilePipe> {
             }
             float progress = Math.min(1.0F, (item.age + partialTick) / transit);
             Direction from = item.from;
-            // From the entry face (progress 0) through the centre (0.5) to the opposite face (1).
             float offset = 0.5F - progress;
             double x = 0.5 + from.getStepX() * offset;
             double y = 0.5 + from.getStepY() * offset;
@@ -52,5 +50,7 @@ public class PipeItemRenderer implements BlockEntityRenderer<TilePipe> {
                     pose, buffers, pipe.getLevel(), 0);
             pose.popPose();
         }
+
+        PipeAttachmentRenderer.render(pipe, pose, buffers);
     }
 }

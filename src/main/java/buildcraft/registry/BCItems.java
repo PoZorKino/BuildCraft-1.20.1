@@ -29,6 +29,9 @@ public final class BCItems {
     public static final RegistryObject<Item> WRENCH =
             ITEMS.register("wrench", () -> new buildcraft.core.item.ItemWrench(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> PAINTBRUSH =
+            ITEMS.register("paintbrush", () -> new buildcraft.core.item.ItemPaintbrush(new Item.Properties().stacksTo(1)));
+
     // Misc crafting components.
     public static final RegistryObject<Item> DIAMOND_SHARD = simple("diamond_shard");
 
@@ -50,6 +53,13 @@ public final class BCItems {
     public static final RegistryObject<Item> CHIPSET_GOLD = simple("chipset_gold");
     public static final RegistryObject<Item> CHIPSET_DIAMOND = simple("chipset_diamond");
     public static final RegistryObject<Item> CHIPSET_QUARTZ = simple("chipset_quartz");
+
+    public static final RegistryObject<Item> PIPE_PLUG =
+            ITEMS.register("pipe_plug", () -> new buildcraft.transport.item.ItemPipePlug(new Item.Properties()));
+    public static final RegistryObject<Item> PIPE_WIRE =
+            ITEMS.register("pipe_wire", () -> new buildcraft.transport.item.ItemPipeWire(new Item.Properties()));
+    public static final RegistryObject<Item> PIPE_FACADE =
+            ITEMS.register("pipe_facade", () -> new buildcraft.transport.item.ItemFacade(new Item.Properties()));
 
     private static RegistryObject<Item> simple(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));

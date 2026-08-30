@@ -12,6 +12,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -25,9 +31,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.network.NetworkHooks;
 
 import buildcraft.factory.tile.ITickingMachine;
+import buildcraft.transport.pipe.IPipeHolder;
+import buildcraft.transport.pipe.PipeAttachment;
+import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeDiamond;
 
 /**
  * A transport pipe block. Reuses vanilla {@link PipeBlock}'s six boolean connection properties and
@@ -89,13 +102,133 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     }
 
     private boolean canConnect(BlockGetter level, BlockPos pos, Direction dir) {
+        if (isBlocked(level, pos, dir) || isBlocked(level, pos.relative(dir), dir.getOpposite())) {
+            return false;
+        }
         BlockPos neighborPos = pos.relative(dir);
         Block neighborBlock = level.getBlockState(neighborPos).getBlock();
         if (neighborBlock instanceof BlockPipe<?> otherPipe) {
-            return otherPipe.kind.equals(kind);
+            return otherPipe.kind.equals(kind) && colorsMatch(level, pos, neighborPos);
         }
         BlockEntity be = level.getBlockEntity(neighborPos);
         return be != null && be.getCapability(connectCap.get(), dir.getOpposite()).isPresent();
+    }
+
+    private static boolean isBlocked(BlockGetter level, BlockPos pos, Direction dir) {
+        BlockEntity be = level.getBlockEntity(pos);
+        return be instanceof IPipeHolder holder && holder.isSideBlocked(dir);
+    }
+
+    /** Uncoloured pipes connect to everything; coloured pipes only connect to the same colour or uncoloured. */
+    private static boolean colorsMatch(BlockGetter level, BlockPos a, BlockPos b) {
+        DyeColor ca = colorOf(level, a);
+        DyeColor cb = colorOf(level, b);
+        return ca == null || cb == null || ca == cb;
+    }
+
+    @Nullable
+    private static DyeColor colorOf(BlockGetter level, BlockPos pos) {
+        BlockEntity be = level.getBlockEntity(pos);
+        return be instanceof IPipeHolder holder ? holder.getColor() : null;
+    }
+
+    public BlockState withConnections(BlockGetter level, BlockPos pos, BlockState state) {
+        for (Direction dir : Direction.values()) {
+            state = state.setValue(PROPERTY_BY_DIRECTION.get(dir), canConnect(level, pos, dir));
+        }
+        return state;
+    }
+
+    public static void refreshConnections(Level level, BlockPos pos) {
+        BlockState state = level.getBlockState(pos);
+        if (state.getBlock() instanceof BlockPipe<?> pipe) {
+            BlockState next = pipe.withConnections(level, pos, state);
+            if (next != state) {
+                level.setBlock(pos, next, 3);
+            }
+        }
+        for (Direction dir : Direction.values()) {
+            BlockPos neighbor = pos.relative(dir);
+            BlockState ns = level.getBlockState(neighbor);
+            if (ns.getBlock() instanceof BlockPipe<?> other) {
+                BlockState next = other.withConnections(level, neighbor, ns);
+                if (next != ns) {
+                    level.setBlock(neighbor, next, 3);
+                }
+            }
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player,
+            InteractionHand hand, BlockHitResult hit) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (player.isShiftKeyDown() && player.getItemInHand(hand).isEmpty() && be instanceof IPipeHolder holder) {
+            PipeAttachment removed = holder.removeAttachment(hit.getDirection());
+            if (removed != null) {
+                if (!player.getAbilities().instabuild) {
+                    ItemHandlerHelper.giveItemToPlayer(player, removed.asItem());
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+        if (be instanceof MenuProvider provider) {
+            if (!level.isClientSide && player instanceof ServerPlayer sp) {
+                NetworkHooks.openScreen(sp, provider, pos);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.PASS;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof IPipeHolder holder) {
+                holder.dropAttachments(level, pos);
+            }
+            if (be instanceof TilePipe pipe) {
+                pipe.dropTravelingItems(level, pos);
+            }
+            if (be instanceof TilePipeDiamond diamond) {
+                diamond.dropContents(level, pos);
+            }
+        }
+        super.onRemove(state, level, pos, newState, moving);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos,
+            boolean moved) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (be instanceof IPipeHolder holder && holder.hasWire()) {
+            holder.updateWirePower();
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean isSignalSource(BlockState state) {
+        return false;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        BlockEntity be = level.getBlockEntity(pos);
+        if (!(be instanceof IPipeHolder holder) || !holder.isWirePowered()) {
+            return 0;
+        }
+        // `direction` is the face of this block pointing toward the asking neighbour.
+        PipeAttachment attachment = holder.getAttachment(direction.getOpposite());
+        if (attachment != null && attachment.kind == PipeAttachment.Kind.WIRE) {
+            return 15;
+        }
+        return 0;
     }
 
     @Override

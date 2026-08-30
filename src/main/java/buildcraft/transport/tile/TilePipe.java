@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -31,13 +32,15 @@ import net.minecraftforge.items.ItemHandlerHelper;
 
 import buildcraft.factory.tile.ITickingMachine;
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.pipe.IPipeHolder;
+import buildcraft.transport.pipe.PipeSideState;
 
 /**
  * Base transport pipe: carries item stacks along the connected pipe network and finally inserts them
  * into a connected inventory. Items travel for {@link #transitTicks} ticks per pipe segment before
  * choosing an exit.
  */
-public class TilePipe extends BlockEntity implements ITickingMachine {
+public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolder {
 
     /** A single item stack travelling through the pipe. */
     public static class TravelingItem {
@@ -52,10 +55,23 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         }
     }
 
+    public static final int MAX_TRAVELING = 32;
+
     protected final int transitTicks;
     protected final List<TravelingItem> items = new ArrayList<>();
+    private final PipeSideState sides = new PipeSideState(this);
 
     private final Map<Direction, LazyOptional<IItemHandler>> insertCaps = new EnumMap<>(Direction.class);
+
+    @Override
+    public BlockEntity asBlockEntity() {
+        return this;
+    }
+
+    @Override
+    public PipeSideState sides() {
+        return sides;
+    }
 
     public TilePipe(BlockEntityType<?> type, BlockPos pos, BlockState state, int transitTicks) {
         super(type, pos, state);
@@ -67,10 +83,23 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
 
     /** Queue a stack entering this pipe from {@code from}. */
     public void accept(ItemStack stack, Direction from) {
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && canAccept()) {
             items.add(new TravelingItem(stack.copy(), from, 0));
             setChanged();
         }
+    }
+
+    public boolean canAccept() {
+        return items.size() < MAX_TRAVELING;
+    }
+
+    public void dropTravelingItems(Level level, BlockPos pos) {
+        for (TravelingItem ti : items) {
+            if (!ti.stack.isEmpty()) {
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ti.stack);
+            }
+        }
+        items.clear();
     }
 
     @Override
@@ -111,33 +140,56 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         return transitTicks;
     }
 
-    private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
+    /**
+     * Candidate exit faces, in preference order. Default: every connected face except the entry,
+     * then bounce back as a last resort. Subclasses (iron / diamond) override this to restrict routing.
+     */
+    protected List<Direction> collectOutputs(BlockState state, TravelingItem ti) {
         List<Direction> outputs = new ArrayList<>();
         for (Direction dir : Direction.values()) {
             if (BlockPipe.isConnected(state, dir) && dir != ti.from) {
                 outputs.add(dir);
             }
         }
-        // Prefer forward directions, but allow bouncing back if nothing else works.
         if (BlockPipe.isConnected(state, ti.from)) {
             outputs.add(ti.from);
         }
+        return outputs;
+    }
+
+    private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
+        List<Direction> outputs = collectOutputs(state, ti);
+        if (outputs.isEmpty()) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ti.stack);
+            ti.stack = ItemStack.EMPTY;
+            return true;
+        }
         for (Direction dir : outputs) {
-            BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
-            if (neighbor instanceof TilePipe pipe) {
-                pipe.accept(ti.stack, dir.getOpposite());
+            if (trySend(level, pos, dir, ti) && ti.stack.isEmpty()) {
                 return true;
             }
-            if (neighbor != null) {
-                IItemHandler handler = neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
-                if (handler != null) {
-                    ItemStack leftover = ItemHandlerHelper.insertItem(handler, ti.stack, false);
-                    if (leftover.getCount() != ti.stack.getCount()) {
-                        ti.stack = leftover;
-                        if (leftover.isEmpty()) {
-                            return true;
-                        }
-                    }
+        }
+        return ti.stack.isEmpty();
+    }
+
+    /** Attempt to hand {@code ti} to the neighbour in {@code dir}. Updates the leftover stack. */
+    protected boolean trySend(Level level, BlockPos pos, Direction dir, TravelingItem ti) {
+        BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+        if (neighbor instanceof TilePipe pipe) {
+            if (!pipe.canAccept()) {
+                return false;
+            }
+            pipe.accept(ti.stack, dir.getOpposite());
+            ti.stack = ItemStack.EMPTY;
+            return true;
+        }
+        if (neighbor != null) {
+            IItemHandler handler = neighbor.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).orElse(null);
+            if (handler != null) {
+                ItemStack leftover = ItemHandlerHelper.insertItem(handler, ti.stack, false);
+                if (leftover.getCount() != ti.stack.getCount()) {
+                    ti.stack = leftover;
+                    return leftover.isEmpty();
                 }
             }
         }
@@ -150,6 +202,9 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ITEM_HANDLER && side != null) {
+            if (isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return insertCaps.get(side).cast();
         }
         return super.getCapability(cap, side);
@@ -175,6 +230,7 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
             list.add(entry);
         }
         tag.put("items", list);
+        sides.save(tag);
     }
 
     @Override
@@ -191,6 +247,7 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
             }
             items.add(new TravelingItem(stack, from, entry.getInt("age")));
         }
+        sides.load(tag);
     }
 
     @Override
@@ -244,6 +301,9 @@ public class TilePipe extends BlockEntity implements ITickingMachine {
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
             if (stack.isEmpty()) {
                 return ItemStack.EMPTY;
+            }
+            if (!canAccept()) {
+                return stack;
             }
             if (!simulate) {
                 accept(stack, side);

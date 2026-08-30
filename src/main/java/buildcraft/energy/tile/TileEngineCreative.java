@@ -32,4 +32,19 @@ public class TileEngineCreative extends TileEngineBase {
     protected int getOutputRate() {
         return OUTPUT;
     }
+
+    @Override
+    public int getPowerStage() {
+        return Math.min(3, super.getPowerStage());
+    }
+
+    @Override
+    protected boolean canOverheat() {
+        return false;
+    }
+
+    @Override
+    protected boolean isActivelyGenerating() {
+        return true;
+    }
 }

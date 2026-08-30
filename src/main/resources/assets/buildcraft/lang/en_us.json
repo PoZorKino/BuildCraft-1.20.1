@@ -19,6 +19,16 @@
     "item.buildcraft.board_green": "Green Redstone Board",
     "item.buildcraft.board_blue": "Blue Redstone Board",
     "item.buildcraft.wrench": "Wrench",
+    "item.buildcraft.paintbrush": "Paintbrush",
+    "item.buildcraft.paintbrush.clean": "Craft with a dye to load a colour",
+    "item.buildcraft.paintbrush.color": "Colour: %s",
+    "item.buildcraft.paintbrush.uses": "Uses: %s / %s",
+    "item.buildcraft.pipe_plug": "Pipe Plug",
+    "item.buildcraft.pipe_wire": "Pipe Wire",
+    "item.buildcraft.pipe_wire.color": "Colour: %s",
+    "item.buildcraft.pipe_facade": "Facade",
+    "item.buildcraft.pipe_facade.empty": "Sneak-right-click a full block to copy it",
+    "item.buildcraft.pipe_facade.copied": "Copied: %s",
 
     "block.buildcraft.engine_wood": "Redstone Engine",
     "block.buildcraft.engine_stone": "Stirling Engine",
@@ -47,6 +57,8 @@
     "block.buildcraft.pipe_cobblestone": "Cobblestone Transport Pipe",
     "block.buildcraft.pipe_stone": "Stone Transport Pipe",
     "block.buildcraft.pipe_gold": "Gold Transport Pipe",
+    "block.buildcraft.pipe_iron": "Iron Transport Pipe",
+    "block.buildcraft.pipe_diamond": "Diamond Transport Pipe",
     "block.buildcraft.pipe_obsidian": "Obsidian Transport Pipe",
     "block.buildcraft.pipe_void": "Void Transport Pipe",
     "block.buildcraft.pipe_fluid_wood": "Wooden Fluid Pipe",
@@ -87,5 +99,20 @@
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
     "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",
     "message.buildcraft.quarry.done": "Quarry finished (%s FE stored)",
-    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE"
+    "message.buildcraft.refinery.status": "Oil: %s mB - Fuel: %s mB - %s FE",
+
+    "message.buildcraft.pipe.iron.facing": "Iron pipe facing %s",
+    "message.buildcraft.pipe.iron.none": "Iron pipe has no connected output",
+    "direction.buildcraft.down": "Down",
+    "direction.buildcraft.up": "Up",
+    "direction.buildcraft.north": "North",
+    "direction.buildcraft.south": "South",
+    "direction.buildcraft.west": "West",
+    "direction.buildcraft.east": "East",
+
+    "robot.mode.buildcraft.pickup": "Pickup",
+    "robot.mode.buildcraft.haul": "Haul to station",
+    "robot.mode.buildcraft.follow": "Follow",
+    "robot.mode.buildcraft.guard": "Guard",
+    "message.buildcraft.robot.mode": "Robot mode: %s"
 }

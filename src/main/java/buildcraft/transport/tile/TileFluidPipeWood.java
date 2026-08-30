@@ -41,6 +41,11 @@ public class TileFluidPipeWood extends TileFluidPipe {
     }
 
     @Override
+    protected boolean exportsToMachines() {
+        return false;
+    }
+
+    @Override
     public void serverTick(Level level, BlockPos pos, BlockState state) {
         super.serverTick(level, pos, state);
 
@@ -48,7 +53,7 @@ public class TileFluidPipeWood extends TileFluidPipe {
             cooldown--;
             return;
         }
-        if (energy.getEnergyStored() < COST_PER_OP || tank.getFluidAmount() >= CAPACITY) {
+        if (energy.getEnergyStored() < COST_PER_OP || tank.getFluidAmount() >= tank.getCapacity()) {
             return;
         }
         for (Direction dir : Direction.values()) {
@@ -76,6 +81,9 @@ public class TileFluidPipeWood extends TileFluidPipe {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null && isSideBlocked(side)) {
+                return LazyOptional.empty();
+            }
             return energyCap.cast();
         }
         return super.getCapability(cap, side);

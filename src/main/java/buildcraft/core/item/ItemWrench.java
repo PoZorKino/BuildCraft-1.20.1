@@ -6,12 +6,17 @@
 package buildcraft.core.item;
 
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
+import buildcraft.transport.tile.TilePipeIron;
 
 /** The Wrench: right-click a machine to rotate it (re-aim engines, lasers, gates, builders, ...). */
 public class ItemWrench extends Item {
@@ -23,6 +28,22 @@ public class ItemWrench extends Item {
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
+        BlockEntity be = level.getBlockEntity(context.getClickedPos());
+        if (be instanceof TilePipeIron iron) {
+            if (!level.isClientSide) {
+                Direction next = iron.cycleOutput();
+                Player player = context.getPlayer();
+                if (player != null) {
+                    if (next == null) {
+                        player.displayClientMessage(Component.translatable("message.buildcraft.pipe.iron.none"), true);
+                    } else {
+                        player.displayClientMessage(Component.translatable("message.buildcraft.pipe.iron.facing",
+                                Component.translatable("direction.buildcraft." + next.getName())), true);
+                    }
+                }
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
         BlockState state = level.getBlockState(context.getClickedPos());
         BlockState rotated = null;
 

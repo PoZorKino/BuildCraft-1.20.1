@@ -9,7 +9,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import buildcraft.client.BuildCraftClient;
 import buildcraft.energy.fluid.BCFluids;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.registry.BCBlocks;
@@ -18,6 +17,7 @@ import buildcraft.registry.BCEntities;
 import buildcraft.registry.BCFeatures;
 import buildcraft.registry.BCItems;
 import buildcraft.registry.BCMenuTypes;
+import buildcraft.registry.BCRecipeSerializers;
 
 /**
  * Main entry point of BuildCraft ported to Minecraft 1.20.1 / Forge.
@@ -40,8 +40,9 @@ public class BuildCraft {
         BCEntities.register(modBus);
         BCFeatures.register(modBus);
         BCCreativeTabs.register(modBus);
+        BCRecipeSerializers.register(modBus);
 
-        BuildCraftClient.init(modBus);
+        buildcraft.config.BCConfig.register();
 
         BCLog.LOGGER.info("BuildCraft (1.20.1 port) constructed.");
     }
