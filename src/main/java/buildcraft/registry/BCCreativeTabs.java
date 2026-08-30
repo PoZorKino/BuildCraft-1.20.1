@@ -36,6 +36,9 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.ENGINE_CREATIVE.get());
                 output.accept(buildcraft.energy.fluid.BCFluids.OIL_BUCKET.get());
                 output.accept(buildcraft.energy.fluid.BCFluids.FUEL_BUCKET.get());
+                output.accept(BCBlocks.TANK.get());
+                output.accept(BCBlocks.PUMP.get());
+                output.accept(BCBlocks.MINING_WELL.get());
             })
             .build());
 

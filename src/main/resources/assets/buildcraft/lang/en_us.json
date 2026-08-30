@@ -19,5 +19,12 @@
     "fluid_type.buildcraft.oil": "Oil",
     "fluid_type.buildcraft.fuel": "Fuel",
     "item.buildcraft.bucket_oil": "Oil Bucket",
-    "item.buildcraft.bucket_fuel": "Fuel Bucket"
+    "item.buildcraft.bucket_fuel": "Fuel Bucket",
+
+    "block.buildcraft.tank": "Tank",
+    "block.buildcraft.pump": "Pump",
+    "block.buildcraft.mining_well": "Mining Well",
+
+    "message.buildcraft.tank.empty": "Tank is empty",
+    "message.buildcraft.tank.contents": "%s / %s mB of %s"
 }

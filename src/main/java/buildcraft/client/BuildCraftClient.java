@@ -44,8 +44,19 @@ public final class BuildCraftClient {
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() ->
-                MenuScreens.register(BCMenuTypes.ENGINE.get(), EngineScreen::new));
+        event.enqueueWork(() -> {
+            MenuScreens.register(BCMenuTypes.ENGINE.get(), EngineScreen::new);
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                    BCBlocks.TANK.get(), net.minecraft.client.renderer.RenderType.translucent());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                    buildcraft.energy.fluid.BCFluids.OIL.get(), net.minecraft.client.renderer.RenderType.translucent());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                    buildcraft.energy.fluid.BCFluids.OIL_FLOWING.get(), net.minecraft.client.renderer.RenderType.translucent());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                    buildcraft.energy.fluid.BCFluids.FUEL.get(), net.minecraft.client.renderer.RenderType.translucent());
+            net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
+                    buildcraft.energy.fluid.BCFluids.FUEL_FLOWING.get(), net.minecraft.client.renderer.RenderType.translucent());
+        });
     }
 
     private static void registerBlockColors(RegisterColorHandlersEvent.Block event) {

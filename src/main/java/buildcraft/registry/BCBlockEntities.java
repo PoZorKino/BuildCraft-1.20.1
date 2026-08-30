@@ -16,6 +16,9 @@ import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
+import buildcraft.factory.tile.TileMiningWell;
+import buildcraft.factory.tile.TilePump;
+import buildcraft.factory.tile.TileTank;
 
 public final class BCBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
@@ -36,6 +39,18 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileEngineCreative>> ENGINE_CREATIVE =
             BLOCK_ENTITIES.register("engine_creative", () -> BlockEntityType.Builder
                     .of(TileEngineCreative::new, BCBlocks.ENGINE_CREATIVE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileTank>> TANK =
+            BLOCK_ENTITIES.register("tank", () -> BlockEntityType.Builder
+                    .of(TileTank::new, BCBlocks.TANK.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePump>> PUMP =
+            BLOCK_ENTITIES.register("pump", () -> BlockEntityType.Builder
+                    .of(TilePump::new, BCBlocks.PUMP.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileMiningWell>> MINING_WELL =
+            BLOCK_ENTITIES.register("mining_well", () -> BlockEntityType.Builder
+                    .of(TileMiningWell::new, BCBlocks.MINING_WELL.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITIES.register(modBus);

@@ -24,6 +24,11 @@ import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
 import buildcraft.energy.tile.TileEngineWood;
+import buildcraft.factory.block.BlockMachine;
+import buildcraft.factory.block.BlockTank;
+import buildcraft.factory.tile.TileMiningWell;
+import buildcraft.factory.tile.TilePump;
+import buildcraft.factory.tile.TileTank;
 
 /** All blocks (and their block items) ported from BuildCraft. */
 public final class BCBlocks {
@@ -41,6 +46,26 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> ENGINE_CREATIVE = registerEngine("engine_creative", MapColor.COLOR_PURPLE,
             () -> BCBlockEntities.ENGINE_CREATIVE.get(), TileEngineCreative::new);
+
+    // --- Factory ------------------------------------------------------------
+
+    public static final RegistryObject<Block> TANK = register("tank", () -> new BlockTank(
+            BlockBehaviour.Properties.of().mapColor(MapColor.NONE).strength(0.5F)
+                    .sound(SoundType.GLASS).noOcclusion().isViewBlocking((s, l, p) -> false)));
+
+    public static final RegistryObject<Block> PUMP = register("pump", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+            () -> BCBlockEntities.PUMP.get(), TilePump::new));
+
+    public static final RegistryObject<Block> MINING_WELL = register("mining_well", () -> new BlockMachine<>(
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+            () -> BCBlockEntities.MINING_WELL.get(), TileMiningWell::new));
+
+    private static RegistryObject<Block> register(String name, Supplier<Block> block) {
+        RegistryObject<Block> obj = BLOCKS.register(name, block);
+        BCItems.ITEMS.register(name, () -> new BlockItem(obj.get(), new Item.Properties()));
+        return obj;
+    }
 
     private static <T extends buildcraft.energy.tile.TileEngineBase> RegistryObject<Block> registerEngine(
             String name, MapColor color,
