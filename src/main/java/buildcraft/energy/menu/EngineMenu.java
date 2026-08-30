@@ -5,6 +5,8 @@
  */
 package buildcraft.energy.menu;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,7 +14,6 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.core.BlockPos;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
@@ -20,19 +21,18 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import buildcraft.registry.BCMenuTypes;
 
-/** Container menu for the Stirling Engine GUI (1 fuel slot + the player inventory). */
-public class StirlingEngineMenu extends AbstractContainerMenu {
+/** Container menu shared by the fuel-burning engines (a single fuel slot + player inventory). */
+public class EngineMenu extends AbstractContainerMenu {
 
     private final ContainerData data;
     public final BlockPos pos;
 
-    /** Client-side constructor used by the menu type factory. */
-    public StirlingEngineMenu(int id, Inventory playerInv, net.minecraft.network.FriendlyByteBuf buf) {
+    public EngineMenu(int id, Inventory playerInv, FriendlyByteBuf buf) {
         this(id, playerInv, new ItemStackHandler(1), new SimpleContainerData(4), buf.readBlockPos());
     }
 
-    public StirlingEngineMenu(int id, Inventory playerInv, IItemHandler fuel, ContainerData data, BlockPos pos) {
-        super(BCMenuTypes.ENGINE_STONE.get(), id);
+    public EngineMenu(int id, Inventory playerInv, IItemHandler fuel, ContainerData data, BlockPos pos) {
+        super(BCMenuTypes.ENGINE.get(), id);
         this.data = data;
         this.pos = pos;
 
@@ -43,13 +43,11 @@ public class StirlingEngineMenu extends AbstractContainerMenu {
             }
         });
 
-        // Player inventory.
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 9; col++) {
                 addSlot(new Slot(playerInv, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
             }
         }
-        // Player hotbar.
         for (int col = 0; col < 9; col++) {
             addSlot(new Slot(playerInv, col, 8 + col * 18, 142));
         }
@@ -74,7 +72,6 @@ public class StirlingEngineMenu extends AbstractContainerMenu {
         return max <= 0 ? 1 : max;
     }
 
-    /** Scaled 0..height flame overlay for the burning fuel indicator. */
     public int getBurnScaled(int height) {
         int total = getCurrentItemBurnTime();
         if (total <= 0) {
@@ -83,7 +80,6 @@ public class StirlingEngineMenu extends AbstractContainerMenu {
         return getBurnTime() * height / total;
     }
 
-    /** Scaled 0..height energy bar. */
     public int getEnergyScaled(int height) {
         return getEnergy() * height / getMaxEnergy();
     }
@@ -98,12 +94,10 @@ public class StirlingEngineMenu extends AbstractContainerMenu {
             int invStart = 1;
             int invEnd = slots.size();
             if (index < invStart) {
-                // From engine fuel slot into the player inventory.
                 if (!moveItemStackTo(stack, invStart, invEnd, true)) {
                     return ItemStack.EMPTY;
                 }
             } else {
-                // From player inventory into the fuel slot (only if it burns).
                 if (ForgeHooks.getBurnTime(stack, null) > 0) {
                     if (!moveItemStackTo(stack, 0, invStart, false)) {
                         return ItemStack.EMPTY;

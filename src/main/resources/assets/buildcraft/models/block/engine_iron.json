@@ -1,8 +1,8 @@
 {
     "textures": {
-        "particle": "buildcraft:block/engine_stone_side",
-        "side": "buildcraft:block/engine_stone_side",
-        "back": "buildcraft:block/engine_stone_back",
+        "particle": "buildcraft:block/engine_iron_side",
+        "side": "buildcraft:block/engine_iron_side",
+        "back": "buildcraft:block/engine_iron_back",
         "chamber": "buildcraft:block/engine_chamber",
         "trunk": "buildcraft:block/engine_trunk"
     },

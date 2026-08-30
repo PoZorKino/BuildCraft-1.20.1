@@ -13,15 +13,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
-import buildcraft.energy.menu.StirlingEngineMenu;
+import buildcraft.energy.menu.EngineMenu;
 
 public final class BCMenuTypes {
     public static final DeferredRegister<MenuType<?>> MENUS =
             DeferredRegister.create(ForgeRegistries.MENU_TYPES, BuildCraft.MOD_ID);
 
-    public static final RegistryObject<MenuType<StirlingEngineMenu>> ENGINE_STONE =
-            MENUS.register("engine_stone",
-                    () -> IForgeMenuType.create(StirlingEngineMenu::new));
+    public static final RegistryObject<MenuType<EngineMenu>> ENGINE =
+            MENUS.register("engine", () -> IForgeMenuType.create(EngineMenu::new));
 
     public static void register(IEventBus modBus) {
         MENUS.register(modBus);

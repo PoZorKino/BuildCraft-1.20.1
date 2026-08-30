@@ -29,6 +29,9 @@ public final class BCItems {
     public static final RegistryObject<Item> WRENCH =
             ITEMS.register("wrench", () -> new Item(new Item.Properties().stacksTo(1)));
 
+    // Misc crafting components.
+    public static final RegistryObject<Item> DIAMOND_SHARD = simple("diamond_shard");
+
     private static RegistryObject<Item> simple(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }

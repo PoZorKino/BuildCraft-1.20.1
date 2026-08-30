@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["III"," G ","IgI"], "key": { "I": { "item": "minecraft:iron_ingot" }, "G": { "item": "minecraft:glass" }, "g": { "item": "buildcraft:gear_iron" } }, "result": { "item": "buildcraft:engine_iron" } }

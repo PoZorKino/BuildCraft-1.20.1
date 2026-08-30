@@ -5,10 +5,14 @@
  */
 package buildcraft.energy.block;
 
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
@@ -28,18 +32,23 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.network.NetworkHooks;
 
-import buildcraft.energy.tile.StirlingEngineBlockEntity;
-import buildcraft.registry.BCBlockEntities;
+import buildcraft.energy.tile.TileEngineBase;
 
 /**
- * The Stirling Engine (historically {@code engineStone}). Burns furnace fuel to generate energy and
- * pushes it out of the face it points towards.
+ * Generic engine block: a directional machine backed by a {@link TileEngineBase}. Placement points
+ * the trunk towards the clicked face; right-click opens a GUI if the engine has one.
  */
-public class BlockEngineStone extends DirectionalBlock implements EntityBlock {
+public class BlockEngine<T extends TileEngineBase> extends DirectionalBlock implements EntityBlock {
     public static final DirectionProperty FACING = DirectionalBlock.FACING;
 
-    public BlockEngineStone(Properties props) {
+    private final Supplier<BlockEntityType<T>> typeSupplier;
+    private final BiFunction<BlockPos, BlockState, T> factory;
+
+    public BlockEngine(Properties props, Supplier<BlockEntityType<T>> typeSupplier,
+            BiFunction<BlockPos, BlockState, T> factory) {
         super(props);
+        this.typeSupplier = typeSupplier;
+        this.factory = factory;
         registerDefaultState(stateDefinition.any().setValue(FACING, Direction.UP));
     }
 
@@ -51,7 +60,6 @@ public class BlockEngineStone extends DirectionalBlock implements EntityBlock {
     @Override
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        // Point the trunk towards the face that was clicked, matching classic engine placement.
         return defaultBlockState().setValue(FACING, context.getClickedFace());
     }
 
@@ -66,11 +74,14 @@ public class BlockEngineStone extends DirectionalBlock implements EntityBlock {
             InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof MenuProvider provider) {
-                NetworkHooks.openScreen((net.minecraft.server.level.ServerPlayer) player, provider, pos);
+            if (be instanceof MenuProvider provider && player instanceof ServerPlayer sp) {
+                NetworkHooks.openScreen(sp, provider, pos);
+                return InteractionResult.CONSUME;
             }
+            return InteractionResult.PASS;
         }
-        return InteractionResult.sidedSuccess(level.isClientSide);
+        BlockEntity be = level.getBlockEntity(pos);
+        return be instanceof MenuProvider ? InteractionResult.SUCCESS : InteractionResult.PASS;
     }
 
     @Override
@@ -78,7 +89,7 @@ public class BlockEngineStone extends DirectionalBlock implements EntityBlock {
     public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
         if (!state.is(newState.getBlock())) {
             BlockEntity be = level.getBlockEntity(pos);
-            if (be instanceof StirlingEngineBlockEntity engine) {
+            if (be instanceof TileEngineBase engine) {
                 engine.dropContents(level, pos);
             }
             super.onRemove(state, level, pos, newState, moving);
@@ -88,17 +99,17 @@ public class BlockEngineStone extends DirectionalBlock implements EntityBlock {
     @Override
     @Nullable
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new StirlingEngineBlockEntity(pos, state);
+        return factory.apply(pos, state);
     }
 
     @Override
     @Nullable
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
-            BlockEntityType<T> type) {
+    public <A extends BlockEntity> BlockEntityTicker<A> getTicker(Level level, BlockState state,
+            BlockEntityType<A> type) {
         if (level.isClientSide) {
             return null;
         }
-        return createTickerHelper(type, BCBlockEntities.ENGINE_STONE.get(),
+        return createTickerHelper(type, typeSupplier.get(),
                 (lvl, pos, st, be) -> be.serverTick(lvl, pos, st));
     }
 

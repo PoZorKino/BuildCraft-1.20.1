@@ -6,7 +6,11 @@
     "item.buildcraft.gear_iron": "Iron Gear",
     "item.buildcraft.gear_gold": "Gold Gear",
     "item.buildcraft.gear_diamond": "Diamond Gear",
+    "item.buildcraft.diamond_shard": "Diamond Shard",
     "item.buildcraft.wrench": "Wrench",
 
-    "block.buildcraft.engine_stone": "Stirling Engine"
+    "block.buildcraft.engine_wood": "Redstone Engine",
+    "block.buildcraft.engine_stone": "Stirling Engine",
+    "block.buildcraft.engine_iron": "Combustion Engine",
+    "block.buildcraft.engine_creative": "Creative Engine"
 }

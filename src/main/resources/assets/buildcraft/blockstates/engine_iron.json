@@ -1,29 +1,29 @@
 {
     "variants": {
         "facing=up": {
-            "model": "buildcraft:block/engine_stone"
+            "model": "buildcraft:block/engine_iron"
         },
         "facing=down": {
-            "model": "buildcraft:block/engine_stone",
+            "model": "buildcraft:block/engine_iron",
             "x": 180
         },
         "facing=north": {
-            "model": "buildcraft:block/engine_stone",
+            "model": "buildcraft:block/engine_iron",
             "x": 90,
             "y": 180
         },
         "facing=south": {
-            "model": "buildcraft:block/engine_stone",
+            "model": "buildcraft:block/engine_iron",
             "x": 90,
             "y": 0
         },
         "facing=west": {
-            "model": "buildcraft:block/engine_stone",
+            "model": "buildcraft:block/engine_iron",
             "x": 90,
             "y": 90
         },
         "facing=east": {
-            "model": "buildcraft:block/engine_stone",
+            "model": "buildcraft:block/engine_iron",
             "x": 90,
             "y": 270
         }

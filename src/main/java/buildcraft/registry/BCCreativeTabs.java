@@ -28,8 +28,12 @@ public final class BCCreativeTabs {
                 output.accept(BCItems.GEAR_IRON.get());
                 output.accept(BCItems.GEAR_GOLD.get());
                 output.accept(BCItems.GEAR_DIAMOND.get());
+                output.accept(BCItems.DIAMOND_SHARD.get());
                 output.accept(BCItems.WRENCH.get());
+                output.accept(BCBlocks.ENGINE_WOOD.get());
                 output.accept(BCBlocks.ENGINE_STONE.get());
+                output.accept(BCBlocks.ENGINE_IRON.get());
+                output.accept(BCBlocks.ENGINE_CREATIVE.get());
             })
             .build());
 
