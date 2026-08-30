@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["rrr","rcr","rrr"], "key": { "r": { "item": "minecraft:redstone" }, "c": { "item": "buildcraft:chipset_redstone" } }, "result": { "item": "buildcraft:board_blank" } }

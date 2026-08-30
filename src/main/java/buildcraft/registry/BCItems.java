@@ -36,6 +36,13 @@ public final class BCItems {
     public static final RegistryObject<Item> TEMPLATE =
             ITEMS.register("template", () -> new Item(new Item.Properties().stacksTo(1)));
 
+    // Robotics: robot and programming boards.
+    public static final RegistryObject<Item> ROBOT = simple("robot");
+    public static final RegistryObject<Item> BOARD_BLANK = simple("board_blank");
+    public static final RegistryObject<Item> BOARD_RED = simple("board_red");
+    public static final RegistryObject<Item> BOARD_GREEN = simple("board_green");
+    public static final RegistryObject<Item> BOARD_BLUE = simple("board_blue");
+
     // Silicon: redstone chipsets, produced in the Assembly Table.
     public static final RegistryObject<Item> CHIPSET_REDSTONE = simple("chipset_redstone");
     public static final RegistryObject<Item> CHIPSET_IRON = simple("chipset_iron");

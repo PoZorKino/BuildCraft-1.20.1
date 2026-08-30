@@ -43,6 +43,8 @@ import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
+import buildcraft.robotics.block.BlockRobotStation;
+import buildcraft.robotics.tile.TileRobotStation;
 import buildcraft.transport.block.BlockPipe;
 import buildcraft.transport.tile.TileFluidPipe;
 import buildcraft.transport.tile.TileFluidPipeWood;
@@ -115,6 +117,17 @@ public final class BCBlocks {
 
     public static final RegistryObject<Block> LASER = register("laser", () -> new BlockLaser(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    // --- Robotics -----------------------------------------------------------
+
+    public static final RegistryObject<Block> ROBOT_STATION = register("robot_station",
+            () -> new BlockRobotStation(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL),
+                    () -> BCBlockEntities.ROBOT_STATION.get(), TileRobotStation::new));
+
+    public static final RegistryObject<Block> ZONE_PLANNER = register("zone_planner",
+            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F)
+                    .sound(SoundType.METAL)));
 
     // --- Transport (pipes) --------------------------------------------------
 

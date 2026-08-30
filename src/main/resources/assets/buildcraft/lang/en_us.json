@@ -13,6 +13,11 @@
     "item.buildcraft.chipset_diamond": "Diamond Chipset",
     "item.buildcraft.chipset_quartz": "Quartz Chipset",
     "item.buildcraft.template": "Template",
+    "item.buildcraft.robot": "Robot",
+    "item.buildcraft.board_blank": "Blank Redstone Board",
+    "item.buildcraft.board_red": "Red Redstone Board",
+    "item.buildcraft.board_green": "Green Redstone Board",
+    "item.buildcraft.board_blue": "Blue Redstone Board",
     "item.buildcraft.wrench": "Wrench",
 
     "block.buildcraft.engine_wood": "Redstone Engine",
@@ -49,6 +54,9 @@
     "block.buildcraft.builder": "Builder",
     "block.buildcraft.filler": "Filler",
     "block.buildcraft.marker": "Land Marker",
+
+    "block.buildcraft.robot_station": "Robot Station",
+    "block.buildcraft.zone_planner": "Zone Planner",
 
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",

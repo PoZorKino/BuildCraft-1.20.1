@@ -1,0 +1,8 @@
+{
+    "parent": "minecraft:block/orientable",
+    "textures": {
+        "front": "buildcraft:block/zone_planner_front",
+        "side": "buildcraft:block/zone_planner_side",
+        "top": "buildcraft:block/zone_planner_top"
+    }
+}
