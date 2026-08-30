@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -54,6 +55,8 @@ public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolde
         }
     }
 
+    public static final int MAX_TRAVELING = 32;
+
     protected final int transitTicks;
     protected final List<TravelingItem> items = new ArrayList<>();
     private final PipeSideState sides = new PipeSideState(this);
@@ -80,10 +83,23 @@ public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolde
 
     /** Queue a stack entering this pipe from {@code from}. */
     public void accept(ItemStack stack, Direction from) {
-        if (!stack.isEmpty()) {
+        if (!stack.isEmpty() && canAccept()) {
             items.add(new TravelingItem(stack.copy(), from, 0));
             setChanged();
         }
+    }
+
+    public boolean canAccept() {
+        return items.size() < MAX_TRAVELING;
+    }
+
+    public void dropTravelingItems(Level level, BlockPos pos) {
+        for (TravelingItem ti : items) {
+            if (!ti.stack.isEmpty()) {
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ti.stack);
+            }
+        }
+        items.clear();
     }
 
     @Override
@@ -142,7 +158,13 @@ public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolde
     }
 
     private boolean tryExit(Level level, BlockPos pos, BlockState state, TravelingItem ti) {
-        for (Direction dir : collectOutputs(state, ti)) {
+        List<Direction> outputs = collectOutputs(state, ti);
+        if (outputs.isEmpty()) {
+            Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ti.stack);
+            ti.stack = ItemStack.EMPTY;
+            return true;
+        }
+        for (Direction dir : outputs) {
             if (trySend(level, pos, dir, ti) && ti.stack.isEmpty()) {
                 return true;
             }
@@ -154,6 +176,9 @@ public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolde
     protected boolean trySend(Level level, BlockPos pos, Direction dir, TravelingItem ti) {
         BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
         if (neighbor instanceof TilePipe pipe) {
+            if (!pipe.canAccept()) {
+                return false;
+            }
             pipe.accept(ti.stack, dir.getOpposite());
             ti.stack = ItemStack.EMPTY;
             return true;
@@ -276,6 +301,9 @@ public class TilePipe extends BlockEntity implements ITickingMachine, IPipeHolde
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
             if (stack.isEmpty()) {
                 return ItemStack.EMPTY;
+            }
+            if (!canAccept()) {
+                return stack;
             }
             if (!simulate) {
                 accept(stack, side);

@@ -48,13 +48,20 @@ public abstract class TileEngineBase extends BlockEntity {
     }
 
     public final void serverTick(Level level, BlockPos pos, BlockState state) {
-        int before = energy.getEnergyStored();
+        int beforeEnergy = energy.getEnergyStored();
+        boolean beforePumping = pumping;
+        int beforeStage = getPowerStage();
         tickEngine(level, pos, state);
-        pumping = energy.getEnergyStored() > before || isActivelyGenerating();
+        pumping = energy.getEnergyStored() > beforeEnergy || isActivelyGenerating();
         pushEnergy(level, pos, state);
         tickOverheat(level, pos);
-        setChanged();
-        level.sendBlockUpdated(pos, state, state, 3);
+        if (energy.getEnergyStored() != beforeEnergy) {
+            setChanged();
+        }
+        if (pumping != beforePumping || getPowerStage() != beforeStage) {
+            setChanged();
+            level.sendBlockUpdated(pos, state, state, 3);
+        }
     }
 
     /** Subclasses that never explode (wood / creative) override this. */
@@ -161,6 +168,9 @@ public abstract class TileEngineBase extends BlockEntity {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
         if (cap == ForgeCapabilities.ENERGY) {
+            if (side != null && side != getBlockState().getValue(BlockEngine.FACING)) {
+                return LazyOptional.empty();
+            }
             return energyCap.cast();
         }
         return super.getCapability(cap, side);

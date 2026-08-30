@@ -19,6 +19,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import buildcraft.silicon.block.BlockSiliconTable;
 import buildcraft.registry.BCMenuTypes;
 
 /**
@@ -116,6 +117,7 @@ public class SiliconTableMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return player.level().getBlockState(pos).getBlock() instanceof BlockSiliconTable
+                && player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
     }
 }

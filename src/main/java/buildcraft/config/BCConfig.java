@@ -52,27 +52,27 @@ public final class BCConfig {
     }
 
     public static boolean engineExplosions() {
-        return ENGINE_EXPLOSIONS.get();
+        return COMMON_SPEC.isLoaded() ? ENGINE_EXPLOSIONS.get() : true;
     }
 
     public static float explosionPower() {
-        return ENGINE_EXPLOSION_POWER.get().floatValue();
+        return COMMON_SPEC.isLoaded() ? ENGINE_EXPLOSION_POWER.get().floatValue() : 3.0F;
     }
 
     public static int overheatTicks() {
-        return ENGINE_OVERHEAT_TICKS.get();
+        return COMMON_SPEC.isLoaded() ? ENGINE_OVERHEAT_TICKS.get() : 80;
     }
 
     public static boolean oilWorldgen() {
-        return OIL_WORLDGEN.get();
+        return !COMMON_SPEC.isLoaded() || OIL_WORLDGEN.get();
     }
 
     public static double robotPickupRange() {
-        return ROBOT_PICKUP_RANGE.get();
+        return COMMON_SPEC.isLoaded() ? ROBOT_PICKUP_RANGE.get() : 6.0;
     }
 
     public static int robotStationRange() {
-        return ROBOT_STATION_RANGE.get();
+        return COMMON_SPEC.isLoaded() ? ROBOT_STATION_RANGE.get() : 32;
     }
 
     private BCConfig() {}

@@ -57,10 +57,9 @@ public class TileLaser extends BlockEntity implements ITickingMachine {
             if (accepted > 0) {
                 energy.spend(accepted);
                 setChanged();
+                level.sendBlockUpdated(pos, state, state, 3);
             }
         }
-        // Sync so the client can show/hide the beam based on activity.
-        level.sendBlockUpdated(pos, state, state, 3);
     }
 
     public int getEnergyStored() {

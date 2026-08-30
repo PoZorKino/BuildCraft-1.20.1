@@ -19,6 +19,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import buildcraft.energy.block.BlockEngine;
 import buildcraft.registry.BCMenuTypes;
 
 /** Container menu shared by the fuel-burning engines (a single fuel slot + player inventory). */
@@ -117,6 +118,7 @@ public class EngineMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return player.level().getBlockState(pos).getBlock() instanceof BlockEngine
+                && player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64.0;
     }
 }

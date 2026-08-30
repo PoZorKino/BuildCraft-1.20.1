@@ -88,7 +88,7 @@ public class TileMiningWell extends BlockEntity implements ITickingMachine {
                 return;
             }
             // Drop the mined resources on top of the well so they are not re-mined.
-            Block.dropResources(targetState, server, pos.above(), null);
+            Block.dropResources(targetState, server, pos.above(), server.getBlockEntity(target));
             server.destroyBlock(target, false);
             nextY--;
             cooldown = MINE_INTERVAL;

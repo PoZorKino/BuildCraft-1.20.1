@@ -26,11 +26,14 @@ public class ItemPipePlug extends Item {
         BlockEntity be = context.getLevel().getBlockEntity(context.getClickedPos());
         if (be instanceof IPipeHolder holder) {
             Direction side = context.getClickedFace();
+            if (context.getLevel().isClientSide) {
+                return InteractionResult.SUCCESS;
+            }
             if (holder.attach(side, PipeAttachment.plug())) {
                 if (context.getPlayer() == null || !context.getPlayer().getAbilities().instabuild) {
                     context.getItemInHand().shrink(1);
                 }
-                return InteractionResult.sidedSuccess(context.getLevel().isClientSide);
+                return InteractionResult.CONSUME;
             }
             return InteractionResult.FAIL;
         }

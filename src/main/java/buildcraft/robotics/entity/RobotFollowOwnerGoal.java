@@ -5,6 +5,8 @@
  */
 package buildcraft.robotics.entity;
 
+import java.util.EnumSet;
+
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 
@@ -17,6 +19,7 @@ public class RobotFollowOwnerGoal extends Goal {
 
     public RobotFollowOwnerGoal(RobotEntity robot) {
         this.robot = robot;
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override

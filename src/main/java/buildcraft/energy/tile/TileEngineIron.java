@@ -58,12 +58,20 @@ public class TileEngineIron extends TileEngineFuel {
     protected void tickEngine(Level level, BlockPos pos, BlockState state) {
         super.tickEngine(level, pos, state);
         // Burn liquid fuel continuously while powered.
-        if (isRedstonePowered(level, pos) && fuelTank.getFluidAmount() >= FLUID_CONSUME_PER_TICK
-                && energy.getEnergyStored() < energy.getMaxEnergyStored()) {
-            fuelTank.drain(FLUID_CONSUME_PER_TICK, IFluidHandler.FluidAction.EXECUTE);
-            energy.generate(FLUID_GENERATION);
+        if (isRedstonePowered(level, pos) && fuelTank.getFluidAmount() >= FLUID_CONSUME_PER_TICK) {
+            if (energy.getEnergyStored() < energy.getMaxEnergyStored()) {
+                fuelTank.drain(FLUID_CONSUME_PER_TICK, IFluidHandler.FluidAction.EXECUTE);
+                energy.generate(FLUID_GENERATION);
+            }
             setChanged();
         }
+    }
+
+    @Override
+    protected boolean isActivelyGenerating() {
+        return super.isActivelyGenerating()
+                || (level != null && isRedstonePowered(level, worldPosition)
+                && fuelTank.getFluidAmount() >= FLUID_CONSUME_PER_TICK);
     }
 
     @Nonnull

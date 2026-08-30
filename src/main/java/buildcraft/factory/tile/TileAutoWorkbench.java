@@ -110,8 +110,12 @@ public class TileAutoWorkbench extends BlockEntity implements MenuProvider, ITic
             }
             if (i < remainders.size()) {
                 ItemStack rem = remainders.get(i);
-                if (!rem.isEmpty() && inv.getStackInSlot(i).isEmpty()) {
-                    inv.setStackInSlot(i, rem);
+                if (!rem.isEmpty()) {
+                    if (inv.getStackInSlot(i).isEmpty()) {
+                        inv.setStackInSlot(i, rem);
+                    } else {
+                        Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, rem);
+                    }
                 }
             }
         }

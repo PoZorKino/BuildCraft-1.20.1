@@ -70,17 +70,19 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine, IPipe
         if (tank.getFluidAmount() <= 0) {
             return;
         }
-        // Phase 1: drain into non-pipe fluid handlers (tanks, machines).
-        for (Direction dir : Direction.values()) {
-            if (!BlockPipe.isConnected(state, dir)) {
-                continue;
+        if (exportsToMachines()) {
+            // Phase 1: drain into non-pipe fluid handlers (tanks, machines).
+            for (Direction dir : Direction.values()) {
+                if (!BlockPipe.isConnected(state, dir)) {
+                    continue;
+                }
+                BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
+                if (neighbor == null || neighbor instanceof TileFluidPipe) {
+                    continue;
+                }
+                neighbor.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite()).ifPresent(dest ->
+                        FluidUtil.tryFluidTransfer(dest, tank, FLOW_RATE, true));
             }
-            BlockEntity neighbor = level.getBlockEntity(pos.relative(dir));
-            if (neighbor == null || neighbor instanceof TileFluidPipe) {
-                continue;
-            }
-            neighbor.getCapability(ForgeCapabilities.FLUID_HANDLER, dir.getOpposite()).ifPresent(dest ->
-                    FluidUtil.tryFluidTransfer(dest, tank, FLOW_RATE, true));
         }
         // Phase 2: balance into neighbouring pipes that hold less, so fluid flows along the network.
         for (Direction dir : Direction.values()) {
@@ -88,6 +90,10 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine, IPipe
                 continue;
             }
             if (level.getBlockEntity(pos.relative(dir)) instanceof TileFluidPipe pipe) {
+                if (!tank.getFluid().isEmpty() && pipe.tank.getFluidAmount() > 0
+                        && !tank.getFluid().isFluidEqual(pipe.tank.getFluid())) {
+                    continue;
+                }
                 int diff = tank.getFluidAmount() - pipe.tank.getFluidAmount();
                 if (diff > 1) {
                     int move = Math.min(Math.min(FLOW_RATE, diff / 2), tank.getFluidAmount());
@@ -104,6 +110,11 @@ public class TileFluidPipe extends BlockEntity implements ITickingMachine, IPipe
             }
         }
         setChanged();
+    }
+
+    /** Wooden extractors override this so they don't dump fluid back into the tank they are pulling from. */
+    protected boolean exportsToMachines() {
+        return true;
     }
 
     @Nonnull

@@ -76,8 +76,9 @@ public class ItemPaintbrush extends Item {
                 return InteractionResult.FAIL;
             }
             if (!level.isClientSide) {
-                holder.setColor(color);
-                consumeUse(context, stack, color);
+                if (holder.setColor(color)) {
+                    consumeUse(context, stack, color);
+                }
             }
             return InteractionResult.sidedSuccess(level.isClientSide);
         }

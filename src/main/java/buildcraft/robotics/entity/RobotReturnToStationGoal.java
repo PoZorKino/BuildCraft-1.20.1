@@ -5,6 +5,8 @@
  */
 package buildcraft.robotics.entity;
 
+import java.util.EnumSet;
+
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import buildcraft.robotics.entity.RobotEntity.Mode;
@@ -19,6 +21,7 @@ public class RobotReturnToStationGoal extends Goal {
 
     public RobotReturnToStationGoal(RobotEntity robot) {
         this.robot = robot;
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override
@@ -48,8 +51,10 @@ public class RobotReturnToStationGoal extends Goal {
         if (robot.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 4.0) {
             robot.getNavigation().moveTo(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 1.2);
         } else {
-            robot.depositInto(station);
-            cooldown = 20;
+            if (!robot.depositInto(station)) {
+                cooldown = 40;
+                station = null;
+            }
         }
     }
 

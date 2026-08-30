@@ -56,8 +56,8 @@ public interface IPipeHolder {
         return sides().getColor();
     }
 
-    default void setColor(@Nullable DyeColor color) {
-        sides().setColor(color);
+    default boolean setColor(@Nullable DyeColor color) {
+        return sides().setColor(color);
     }
 
     default boolean attach(Direction side, PipeAttachment attachment) {

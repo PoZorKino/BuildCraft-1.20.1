@@ -61,7 +61,7 @@ public class TileChute extends BlockEntity implements ITickingMachine {
         }
         // Vacuum dropped items just above the chute.
         AABB area = new AABB(pos.above()).inflate(0.25, 0.25, 0.25).expandTowards(0, 0.5, 0);
-        List<ItemEntity> drops = level.getEntitiesOfClass(ItemEntity.class, area, e -> e.isAlive() && !e.getItem().isEmpty());
+        List<ItemEntity> drops = level.getEntitiesOfClass(ItemEntity.class, area, e -> e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay());
         for (ItemEntity entity : drops) {
             ItemStack leftover = insert(entity.getItem().copy());
             if (leftover.getCount() != entity.getItem().getCount()) {

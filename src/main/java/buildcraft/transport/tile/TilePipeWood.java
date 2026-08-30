@@ -5,6 +5,9 @@
  */
 package buildcraft.transport.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -56,6 +59,9 @@ public class TilePipeWood extends TilePipe {
         if (energy.getEnergyStored() < COST_PER_EXTRACT) {
             return;
         }
+        if (!hasPipeOutput(level, pos, state)) {
+            return;
+        }
         for (Direction dir : Direction.values()) {
             if (!BlockPipe.isConnected(state, dir)) {
                 continue;
@@ -69,15 +75,42 @@ public class TilePipeWood extends TilePipe {
                 continue;
             }
             for (int slot = 0; slot < handler.getSlots(); slot++) {
-                ItemStack extracted = handler.extractItem(slot, EXTRACT_COUNT, false);
-                if (!extracted.isEmpty()) {
-                    accept(extracted, dir);
+                ItemStack extracted = handler.extractItem(slot, EXTRACT_COUNT, true);
+                if (extracted.isEmpty()) {
+                    continue;
+                }
+                ItemStack taken = handler.extractItem(slot, EXTRACT_COUNT, false);
+                if (!taken.isEmpty()) {
+                    accept(taken, dir);
                     energy.spend(COST_PER_EXTRACT);
                     cooldown = EXTRACT_INTERVAL;
                     return;
                 }
             }
         }
+    }
+
+    @Override
+    protected List<Direction> collectOutputs(BlockState state, TravelingItem ti) {
+        List<Direction> outputs = new ArrayList<>();
+        for (Direction dir : Direction.values()) {
+            if (dir == ti.from || !BlockPipe.isConnected(state, dir)) {
+                continue;
+            }
+            if (level != null && level.getBlockEntity(worldPosition.relative(dir)) instanceof TilePipe) {
+                outputs.add(dir);
+            }
+        }
+        return outputs;
+    }
+
+    private boolean hasPipeOutput(Level level, BlockPos pos, BlockState state) {
+        for (Direction dir : Direction.values()) {
+            if (BlockPipe.isConnected(state, dir) && level.getBlockEntity(pos.relative(dir)) instanceof TilePipe) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Nonnull

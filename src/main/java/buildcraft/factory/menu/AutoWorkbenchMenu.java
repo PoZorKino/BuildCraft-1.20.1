@@ -10,12 +10,14 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
+import buildcraft.registry.BCBlocks;
 import buildcraft.registry.BCMenuTypes;
 
 /** Menu for the Auto Workbench: a 3x3 grid, an output slot, and the player inventory. */
@@ -80,6 +82,6 @@ public class AutoWorkbenchMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return true;
+        return stillValid(ContainerLevelAccess.create(player.level(), pos), player, BCBlocks.AUTO_WORKBENCH.get());
     }
 }

@@ -84,12 +84,13 @@ public final class PipeSideState {
         return color;
     }
 
-    public void setColor(@Nullable DyeColor color) {
+    public boolean setColor(@Nullable DyeColor color) {
         if (this.color == color) {
-            return;
+            return false;
         }
         this.color = color;
         notifyChange(false);
+        return true;
     }
 
     public boolean attach(Direction side, PipeAttachment attachment) {

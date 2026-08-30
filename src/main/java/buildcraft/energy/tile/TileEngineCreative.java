@@ -34,6 +34,11 @@ public class TileEngineCreative extends TileEngineBase {
     }
 
     @Override
+    public int getPowerStage() {
+        return Math.min(3, super.getPowerStage());
+    }
+
+    @Override
     protected boolean canOverheat() {
         return false;
     }

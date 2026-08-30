@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import buildcraft.factory.tile.ITickingMachine;
+import buildcraft.factory.tile.TileChute;
 
 /** Generic solid machine block backed by a block entity, with an optional server-side ticker. */
 public class BlockMachine<T extends BlockEntity> extends Block implements EntityBlock {
@@ -32,6 +33,18 @@ public class BlockMachine<T extends BlockEntity> extends Block implements Entity
         super(props);
         this.typeSupplier = typeSupplier;
         this.factory = factory;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean moving) {
+        if (!state.is(newState.getBlock())) {
+            BlockEntity be = level.getBlockEntity(pos);
+            if (be instanceof TileChute chute) {
+                chute.dropContents(level, pos);
+            }
+        }
+        super.onRemove(state, level, pos, newState, moving);
     }
 
     @Override

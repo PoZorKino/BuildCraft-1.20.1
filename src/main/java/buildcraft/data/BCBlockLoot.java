@@ -10,6 +10,7 @@ import java.util.Set;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.registry.BCBlocks;
@@ -22,8 +23,13 @@ public class BCBlockLoot extends BlockLootSubProvider {
 
     @Override
     protected void generate() {
-        for (RegistryObject<Block> block : BCBlocks.BLOCKS.getEntries()) {
-            dropSelf(block.get());
+        for (RegistryObject<Block> holder : BCBlocks.BLOCKS.getEntries()) {
+            Block block = holder.get();
+            if (block instanceof LiquidBlock) {
+                add(block, noDrop());
+            } else {
+                dropSelf(block);
+            }
         }
     }
 

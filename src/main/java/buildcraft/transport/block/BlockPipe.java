@@ -39,6 +39,7 @@ import net.minecraftforge.network.NetworkHooks;
 import buildcraft.factory.tile.ITickingMachine;
 import buildcraft.transport.pipe.IPipeHolder;
 import buildcraft.transport.pipe.PipeAttachment;
+import buildcraft.transport.tile.TilePipe;
 import buildcraft.transport.tile.TilePipeDiamond;
 
 /**
@@ -189,6 +190,9 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
             if (be instanceof IPipeHolder holder) {
                 holder.dropAttachments(level, pos);
             }
+            if (be instanceof TilePipe pipe) {
+                pipe.dropTravelingItems(level, pos);
+            }
             if (be instanceof TilePipeDiamond diamond) {
                 diamond.dropContents(level, pos);
             }
@@ -209,14 +213,19 @@ public class BlockPipe<T extends BlockEntity> extends PipeBlock implements Entit
     @Override
     @SuppressWarnings("deprecation")
     public boolean isSignalSource(BlockState state) {
-        return true;
+        return false;
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
         BlockEntity be = level.getBlockEntity(pos);
-        if (be instanceof IPipeHolder holder && holder.isWirePowered()) {
+        if (!(be instanceof IPipeHolder holder) || !holder.isWirePowered()) {
+            return 0;
+        }
+        // `direction` is the face of this block pointing toward the asking neighbour.
+        PipeAttachment attachment = holder.getAttachment(direction.getOpposite());
+        if (attachment != null && attachment.kind == PipeAttachment.Kind.WIRE) {
             return 15;
         }
         return 0;

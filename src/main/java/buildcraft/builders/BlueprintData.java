@@ -105,15 +105,21 @@ public final class BlueprintData {
         if (i < 0 || i >= blocks.length) {
             return null;
         }
-        BlockState state = palette.get(blocks[i]);
+        int idx = blocks[i];
+        if (idx < 0 || idx >= palette.size()) {
+            return null;
+        }
+        BlockState state = palette.get(idx);
         return state.isAir() ? null : state;
     }
 
     /** Convert a flat index to the relative offset from the build origin. */
     public BlockPos offsetFor(int i) {
-        int dz = i % sizeZ;
-        int dy = (i / sizeZ) % sizeY;
-        int dx = i / (sizeZ * sizeY);
+        int sz = Math.max(1, sizeZ);
+        int sy = Math.max(1, sizeY);
+        int dz = i % sz;
+        int dy = (i / sz) % sy;
+        int dx = i / (sz * sy);
         return new BlockPos(dx, dy, dz);
     }
 

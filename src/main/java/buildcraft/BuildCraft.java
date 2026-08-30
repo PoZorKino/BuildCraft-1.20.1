@@ -9,7 +9,6 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import buildcraft.client.BuildCraftClient;
 import buildcraft.energy.fluid.BCFluids;
 import buildcraft.registry.BCBlockEntities;
 import buildcraft.registry.BCBlocks;
@@ -44,8 +43,6 @@ public class BuildCraft {
         BCRecipeSerializers.register(modBus);
 
         buildcraft.config.BCConfig.register();
-
-        BuildCraftClient.init(modBus);
 
         BCLog.LOGGER.info("BuildCraft (1.20.1 port) constructed.");
     }

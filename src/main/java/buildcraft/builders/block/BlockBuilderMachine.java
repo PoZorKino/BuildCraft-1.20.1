@@ -72,7 +72,7 @@ public class BlockBuilderMachine<T extends BlockEntity> extends HorizontalDirect
         if (!level.isClientSide) {
             ItemStack held = player.getItemInHand(hand);
             ItemStack current = holder.getTemplate();
-            if (current.isEmpty() && !held.isEmpty()) {
+            if (current.isEmpty() && held.is(buildcraft.registry.BCItems.TEMPLATE.get())) {
                 holder.setTemplate(held.split(1));
             } else if (!current.isEmpty()) {
                 if (!player.getInventory().add(current)) {

@@ -101,7 +101,11 @@ public class RobotEntity extends PathfinderMob {
         if (ownerId == null || !(level() instanceof ServerLevel server)) {
             return null;
         }
-        return server.getServer().getPlayerList().getPlayer(ownerId);
+        Player player = server.getServer().getPlayerList().getPlayer(ownerId);
+        if (player == null || player.level() != level()) {
+            return null;
+        }
+        return player;
     }
 
     public ItemStackHandler getInventory() {
@@ -110,11 +114,20 @@ public class RobotEntity extends PathfinderMob {
 
     public boolean isInventoryFull() {
         for (int i = 0; i < inventory.getSlots(); i++) {
-            if (inventory.getStackInSlot(i).isEmpty()) {
+            ItemStack slot = inventory.getStackInSlot(i);
+            if (slot.isEmpty() || slot.getCount() < slot.getMaxStackSize()) {
                 return false;
             }
         }
         return true;
+    }
+
+    public boolean canInsert(ItemStack stack) {
+        ItemStack remaining = stack.copy();
+        for (int i = 0; i < inventory.getSlots() && !remaining.isEmpty(); i++) {
+            remaining = inventory.insertItem(i, remaining, true);
+        }
+        return remaining.getCount() < stack.getCount();
     }
 
     public boolean isInventoryEmpty() {
@@ -189,10 +202,12 @@ public class RobotEntity extends PathfinderMob {
     protected void dropCustomDeathLoot(net.minecraft.world.damagesource.DamageSource source, int looting,
             boolean recentlyHit) {
         super.dropCustomDeathLoot(source, looting, recentlyHit);
+        spawnAtLocation(new ItemStack(BCItems.ROBOT.get()));
         for (int i = 0; i < inventory.getSlots(); i++) {
             ItemStack stack = inventory.getStackInSlot(i);
             if (!stack.isEmpty()) {
-                spawnAtLocation(stack);
+                spawnAtLocation(stack.copy());
+                inventory.setStackInSlot(i, ItemStack.EMPTY);
             }
         }
     }
@@ -233,7 +248,7 @@ public class RobotEntity extends PathfinderMob {
     void collectNearbyItems() {
         double range = BCConfig.robotPickupRange();
         List<ItemEntity> nearby = level().getEntitiesOfClass(ItemEntity.class, getBoundingBox().inflate(range),
-                e -> e.isAlive() && !e.getItem().isEmpty());
+                e -> e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay() && canInsert(e.getItem()));
         ItemEntity target = null;
         double best = Double.MAX_VALUE;
         for (ItemEntity entity : nearby) {

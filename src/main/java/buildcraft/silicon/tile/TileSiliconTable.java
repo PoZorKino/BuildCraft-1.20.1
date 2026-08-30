@@ -123,7 +123,11 @@ public abstract class TileSiliconTable extends BlockEntity implements MenuProvid
             }
             return;
         }
-        cost = Math.max(1, getCost());
+        int nextCost = Math.max(1, getCost());
+        if (nextCost != cost) {
+            progress = 0;
+        }
+        cost = nextCost;
         ItemStack out = inv.getStackInSlot(inputCount);
         boolean canOutput = out.isEmpty()
                 || (ItemStack.isSameItemSameTags(out, result) && out.getCount() + result.getCount() <= out.getMaxStackSize());

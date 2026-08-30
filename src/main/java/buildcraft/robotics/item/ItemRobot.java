@@ -6,7 +6,6 @@
 package buildcraft.robotics.item;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
@@ -28,7 +27,10 @@ public class ItemRobot extends Item {
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         if (level instanceof ServerLevel serverLevel) {
-            BlockPos spawnPos = context.getClickedPos().relative(Direction.UP);
+            BlockPos spawnPos = context.getClickedPos().relative(context.getClickedFace());
+            if (!serverLevel.getBlockState(spawnPos).canBeReplaced() && !serverLevel.getBlockState(spawnPos).isAir()) {
+                return InteractionResult.FAIL;
+            }
             RobotEntity robot = BCEntities.ROBOT.get().create(serverLevel);
             if (robot != null) {
                 robot.moveTo(spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, 0.0F, 0.0F);

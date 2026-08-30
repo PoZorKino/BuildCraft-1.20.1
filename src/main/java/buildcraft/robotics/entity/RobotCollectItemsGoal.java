@@ -5,6 +5,8 @@
  */
 package buildcraft.robotics.entity;
 
+import java.util.EnumSet;
+
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import buildcraft.robotics.entity.RobotEntity.Mode;
@@ -16,6 +18,7 @@ public class RobotCollectItemsGoal extends Goal {
 
     public RobotCollectItemsGoal(RobotEntity robot) {
         this.robot = robot;
+        setFlags(EnumSet.of(Flag.MOVE));
     }
 
     @Override

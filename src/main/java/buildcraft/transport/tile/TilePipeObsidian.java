@@ -31,8 +31,11 @@ public class TilePipeObsidian extends TilePipe {
         super.serverTick(level, pos, state);
         AABB area = new AABB(pos).inflate(RADIUS);
         List<ItemEntity> drops = level.getEntitiesOfClass(ItemEntity.class, area,
-                e -> e.isAlive() && !e.getItem().isEmpty());
+                e -> e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay());
         for (ItemEntity entity : drops) {
+            if (!canAccept()) {
+                break;
+            }
             accept(entity.getItem().copy(), Direction.UP);
             entity.discard();
         }

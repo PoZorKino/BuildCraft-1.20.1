@@ -74,7 +74,8 @@ public class TileRobotStation extends BlockEntity implements ITickingMachine {
             return;
         }
         AABB area = new AABB(pos).inflate(RADIUS);
-        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, area, e -> e.isAlive() && !e.getItem().isEmpty());
+        List<ItemEntity> items = level.getEntitiesOfClass(ItemEntity.class, area,
+                e -> e.isAlive() && !e.getItem().isEmpty() && !e.hasPickUpDelay());
         for (ItemEntity entity : items) {
             ItemStack stack = entity.getItem();
             ItemStack leftover = insert(stack.copy());
