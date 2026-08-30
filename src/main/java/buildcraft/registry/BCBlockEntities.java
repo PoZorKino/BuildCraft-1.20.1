@@ -13,6 +13,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 import buildcraft.BuildCraft;
 import buildcraft.builders.tile.TileQuarry;
+import buildcraft.silicon.tile.TileAssemblyTable;
+import buildcraft.silicon.tile.TileLaser;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
 import buildcraft.energy.tile.TileEngineStone;
@@ -66,6 +68,14 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TileQuarry>> QUARRY =
             BLOCK_ENTITIES.register("quarry", () -> BlockEntityType.Builder
                     .of(TileQuarry::new, BCBlocks.QUARRY.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileAssemblyTable>> ASSEMBLY_TABLE =
+            BLOCK_ENTITIES.register("assembly_table", () -> BlockEntityType.Builder
+                    .of(TileAssemblyTable::new, BCBlocks.ASSEMBLY_TABLE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileLaser>> LASER =
+            BLOCK_ENTITIES.register("laser", () -> BlockEntityType.Builder
+                    .of(TileLaser::new, BCBlocks.LASER.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TilePipe>> PIPE_COBBLESTONE =
             BLOCK_ENTITIES.register("pipe_cobblestone", () -> BlockEntityType.Builder

@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "redstone", "pattern": ["ded","g g","ttt"], "key": { "d": { "item": "minecraft:diamond" }, "e": { "item": "buildcraft:gear_diamond" }, "g": { "item": "buildcraft:gear_gold" }, "t": { "item": "minecraft:smooth_stone" } }, "result": { "item": "buildcraft:assembly_table" } }

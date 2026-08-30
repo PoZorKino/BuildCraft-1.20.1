@@ -7,6 +7,11 @@
     "item.buildcraft.gear_gold": "Gold Gear",
     "item.buildcraft.gear_diamond": "Diamond Gear",
     "item.buildcraft.diamond_shard": "Diamond Shard",
+    "item.buildcraft.chipset_redstone": "Redstone Chipset",
+    "item.buildcraft.chipset_iron": "Iron Chipset",
+    "item.buildcraft.chipset_gold": "Gold Chipset",
+    "item.buildcraft.chipset_diamond": "Diamond Chipset",
+    "item.buildcraft.chipset_quartz": "Quartz Chipset",
     "item.buildcraft.wrench": "Wrench",
 
     "block.buildcraft.engine_wood": "Redstone Engine",
@@ -35,6 +40,9 @@
     "block.buildcraft.pipe_fluid_cobblestone": "Cobblestone Fluid Pipe",
     "block.buildcraft.pipe_power_wood": "Wooden Kinesis Pipe",
     "block.buildcraft.pipe_power_cobblestone": "Cobblestone Kinesis Pipe",
+
+    "block.buildcraft.assembly_table": "Assembly Table",
+    "block.buildcraft.laser": "Laser",
 
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",

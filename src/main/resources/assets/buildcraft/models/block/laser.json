@@ -1,0 +1,9 @@
+{
+    "parent": "minecraft:block/cube_bottom_top",
+    "textures": {
+        "top": "buildcraft:block/laser_top",
+        "bottom": "buildcraft:block/laser_bottom",
+        "side": "buildcraft:block/laser_side",
+        "particle": "buildcraft:block/laser_side"
+    }
+}

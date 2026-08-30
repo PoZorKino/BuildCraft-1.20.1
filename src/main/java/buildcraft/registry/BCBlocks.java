@@ -23,6 +23,9 @@ import net.minecraftforge.registries.RegistryObject;
 import buildcraft.BuildCraft;
 import buildcraft.builders.block.BlockQuarry;
 import buildcraft.builders.tile.TileQuarry;
+import buildcraft.silicon.block.BlockAssemblyTable;
+import buildcraft.silicon.block.BlockLaser;
+import buildcraft.silicon.tile.TileAssemblyTable;
 import buildcraft.energy.block.BlockEngine;
 import buildcraft.energy.tile.TileEngineCreative;
 import buildcraft.energy.tile.TileEngineIron;
@@ -80,6 +83,16 @@ public final class BCBlocks {
     // --- Builders -----------------------------------------------------------
 
     public static final RegistryObject<Block> QUARRY = register("quarry", () -> new BlockQuarry(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
+
+    // --- Silicon ------------------------------------------------------------
+
+    public static final RegistryObject<Block> ASSEMBLY_TABLE = register("assembly_table",
+            () -> new BlockAssemblyTable(
+                    BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(3.0F).sound(SoundType.STONE),
+                    () -> BCBlockEntities.ASSEMBLY_TABLE.get(), TileAssemblyTable::new));
+
+    public static final RegistryObject<Block> LASER = register("laser", () -> new BlockLaser(
             BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.0F).sound(SoundType.METAL)));
 
     // --- Transport (pipes) --------------------------------------------------

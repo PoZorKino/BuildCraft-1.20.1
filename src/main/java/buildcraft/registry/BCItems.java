@@ -32,6 +32,13 @@ public final class BCItems {
     // Misc crafting components.
     public static final RegistryObject<Item> DIAMOND_SHARD = simple("diamond_shard");
 
+    // Silicon: redstone chipsets, produced in the Assembly Table.
+    public static final RegistryObject<Item> CHIPSET_REDSTONE = simple("chipset_redstone");
+    public static final RegistryObject<Item> CHIPSET_IRON = simple("chipset_iron");
+    public static final RegistryObject<Item> CHIPSET_GOLD = simple("chipset_gold");
+    public static final RegistryObject<Item> CHIPSET_DIAMOND = simple("chipset_diamond");
+    public static final RegistryObject<Item> CHIPSET_QUARTZ = simple("chipset_quartz");
+
     private static RegistryObject<Item> simple(String name) {
         return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }

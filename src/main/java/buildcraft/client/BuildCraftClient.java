@@ -46,6 +46,8 @@ public final class BuildCraftClient {
     private static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
             MenuScreens.register(BCMenuTypes.ENGINE.get(), EngineScreen::new);
+            MenuScreens.register(BCMenuTypes.ASSEMBLY_TABLE.get(),
+                    buildcraft.silicon.client.AssemblyScreen::new);
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
                     BCBlocks.TANK.get(), net.minecraft.client.renderer.RenderType.translucent());
             net.minecraft.client.renderer.ItemBlockRenderTypes.setRenderLayer(
