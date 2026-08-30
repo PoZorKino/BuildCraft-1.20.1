@@ -60,6 +60,8 @@ import buildcraft.transport.block.BlockPipe;
 import buildcraft.transport.tile.TileFluidPipe;
 import buildcraft.transport.tile.TileFluidPipeWood;
 import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeObsidian;
+import buildcraft.transport.tile.TilePipeVoid;
 import buildcraft.transport.tile.TilePipeWood;
 import buildcraft.transport.tile.TilePowerPipe;
 
@@ -193,6 +195,14 @@ public final class BCBlocks {
     public static final RegistryObject<Block> PIPE_GOLD = registerPipe("pipe_gold",
             () -> BCBlockEntities.PIPE_GOLD.get(),
             (pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
+    public static final RegistryObject<Block> PIPE_OBSIDIAN = registerPipe("pipe_obsidian",
+            () -> BCBlockEntities.PIPE_OBSIDIAN.get(), TilePipeObsidian::new,
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
+    public static final RegistryObject<Block> PIPE_VOID = registerPipe("pipe_void",
+            () -> BCBlockEntities.PIPE_VOID.get(), TilePipeVoid::new,
             () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
 
     // Fluid pipes.

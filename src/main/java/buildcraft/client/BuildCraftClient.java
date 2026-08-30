@@ -44,6 +44,8 @@ public final class BuildCraftClient {
                 buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_GOLD.get(),
                 buildcraft.transport.client.PipeItemRenderer::new);
+        event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.PIPE_OBSIDIAN.get(),
+                buildcraft.transport.client.PipeItemRenderer::new);
         event.registerBlockEntityRenderer(buildcraft.registry.BCBlockEntities.LASER.get(),
                 buildcraft.silicon.client.LaserRenderer::new);
         event.registerEntityRenderer(buildcraft.registry.BCEntities.ROBOT.get(),

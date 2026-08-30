@@ -1,0 +1,1 @@
+{ "type": "minecraft:crafting_shaped", "category": "misc", "pattern": ["cgc"], "key": { "c": { "item": "minecraft:cobblestone" }, "g": { "item": "minecraft:black_wool" } }, "result": { "item": "buildcraft:pipe_void", "count": 8 } }

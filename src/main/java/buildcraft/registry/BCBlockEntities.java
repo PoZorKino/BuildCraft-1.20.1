@@ -39,6 +39,8 @@ import buildcraft.transport.tile.TileFluidPipe;
 import buildcraft.transport.tile.TileFluidPipeWood;
 import buildcraft.transport.tile.TileGate;
 import buildcraft.transport.tile.TilePipe;
+import buildcraft.transport.tile.TilePipeObsidian;
+import buildcraft.transport.tile.TilePipeVoid;
 import buildcraft.transport.tile.TilePipeWood;
 import buildcraft.transport.tile.TilePowerPipe;
 
@@ -147,6 +149,14 @@ public final class BCBlockEntities {
             BLOCK_ENTITIES.register("pipe_gold", () -> BlockEntityType.Builder
                     .of((pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4),
                             BCBlocks.PIPE_GOLD.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipeObsidian>> PIPE_OBSIDIAN =
+            BLOCK_ENTITIES.register("pipe_obsidian", () -> BlockEntityType.Builder
+                    .of(TilePipeObsidian::new, BCBlocks.PIPE_OBSIDIAN.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipeVoid>> PIPE_VOID =
+            BLOCK_ENTITIES.register("pipe_void", () -> BlockEntityType.Builder
+                    .of(TilePipeVoid::new, BCBlocks.PIPE_VOID.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TilePipeWood>> PIPE_WOOD =
             BLOCK_ENTITIES.register("pipe_wood", () -> BlockEntityType.Builder
