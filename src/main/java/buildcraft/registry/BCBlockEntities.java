@@ -21,8 +21,11 @@ import buildcraft.factory.tile.TileMiningWell;
 import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
+import buildcraft.transport.tile.TileFluidPipe;
+import buildcraft.transport.tile.TileFluidPipeWood;
 import buildcraft.transport.tile.TilePipe;
 import buildcraft.transport.tile.TilePipeWood;
+import buildcraft.transport.tile.TilePowerPipe;
 
 public final class BCBlockEntities {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
@@ -77,6 +80,30 @@ public final class BCBlockEntities {
     public static final RegistryObject<BlockEntityType<TilePipeWood>> PIPE_WOOD =
             BLOCK_ENTITIES.register("pipe_wood", () -> BlockEntityType.Builder
                     .of(TilePipeWood::new, BCBlocks.PIPE_WOOD.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePipe>> PIPE_STONE =
+            BLOCK_ENTITIES.register("pipe_stone", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TilePipe(BCBlockEntities.PIPE_STONE.get(), pos, state, 8),
+                            BCBlocks.PIPE_STONE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileFluidPipe>> PIPE_FLUID_COBBLESTONE =
+            BLOCK_ENTITIES.register("pipe_fluid_cobblestone", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TileFluidPipe(BCBlockEntities.PIPE_FLUID_COBBLESTONE.get(), pos, state),
+                            BCBlocks.PIPE_FLUID_COBBLESTONE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TileFluidPipeWood>> PIPE_FLUID_WOOD =
+            BLOCK_ENTITIES.register("pipe_fluid_wood", () -> BlockEntityType.Builder
+                    .of(TileFluidPipeWood::new, BCBlocks.PIPE_FLUID_WOOD.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePowerPipe>> PIPE_POWER_COBBLESTONE =
+            BLOCK_ENTITIES.register("pipe_power_cobblestone", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_COBBLESTONE.get(), pos, state),
+                            BCBlocks.PIPE_POWER_COBBLESTONE.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<TilePowerPipe>> PIPE_POWER_WOOD =
+            BLOCK_ENTITIES.register("pipe_power_wood", () -> BlockEntityType.Builder
+                    .of((pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_WOOD.get(), pos, state),
+                            BCBlocks.PIPE_POWER_WOOD.get()).build(null));
 
     public static void register(IEventBus modBus) {
         BLOCK_ENTITIES.register(modBus);

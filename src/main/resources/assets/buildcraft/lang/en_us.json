@@ -29,7 +29,12 @@
 
     "block.buildcraft.pipe_wood": "Wooden Transport Pipe",
     "block.buildcraft.pipe_cobblestone": "Cobblestone Transport Pipe",
+    "block.buildcraft.pipe_stone": "Stone Transport Pipe",
     "block.buildcraft.pipe_gold": "Gold Transport Pipe",
+    "block.buildcraft.pipe_fluid_wood": "Wooden Fluid Pipe",
+    "block.buildcraft.pipe_fluid_cobblestone": "Cobblestone Fluid Pipe",
+    "block.buildcraft.pipe_power_wood": "Wooden Kinesis Pipe",
+    "block.buildcraft.pipe_power_cobblestone": "Cobblestone Kinesis Pipe",
 
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",

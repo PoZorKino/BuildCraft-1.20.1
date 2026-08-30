@@ -43,7 +43,12 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.QUARRY.get());
                 output.accept(BCBlocks.PIPE_WOOD.get());
                 output.accept(BCBlocks.PIPE_COBBLESTONE.get());
+                output.accept(BCBlocks.PIPE_STONE.get());
                 output.accept(BCBlocks.PIPE_GOLD.get());
+                output.accept(BCBlocks.PIPE_FLUID_WOOD.get());
+                output.accept(BCBlocks.PIPE_FLUID_COBBLESTONE.get());
+                output.accept(BCBlocks.PIPE_POWER_WOOD.get());
+                output.accept(BCBlocks.PIPE_POWER_COBBLESTONE.get());
             })
             .build());
 

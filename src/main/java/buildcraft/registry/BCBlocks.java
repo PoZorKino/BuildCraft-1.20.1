@@ -36,8 +36,11 @@ import buildcraft.factory.tile.TilePump;
 import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
 import buildcraft.transport.block.BlockPipe;
+import buildcraft.transport.tile.TileFluidPipe;
+import buildcraft.transport.tile.TileFluidPipeWood;
 import buildcraft.transport.tile.TilePipe;
 import buildcraft.transport.tile.TilePipeWood;
+import buildcraft.transport.tile.TilePowerPipe;
 
 /** All blocks (and their block items) ported from BuildCraft. */
 public final class BCBlocks {
@@ -81,23 +84,55 @@ public final class BCBlocks {
 
     // --- Transport (pipes) --------------------------------------------------
 
+    // Item pipes.
+    public static final RegistryObject<Block> PIPE_WOOD = registerPipe("pipe_wood",
+            () -> BCBlockEntities.PIPE_WOOD.get(), TilePipeWood::new,
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
     public static final RegistryObject<Block> PIPE_COBBLESTONE = registerPipe("pipe_cobblestone",
             () -> BCBlockEntities.PIPE_COBBLESTONE.get(),
-            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_COBBLESTONE.get(), pos, state, 8));
+            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_COBBLESTONE.get(), pos, state, 8),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
+
+    public static final RegistryObject<Block> PIPE_STONE = registerPipe("pipe_stone",
+            () -> BCBlockEntities.PIPE_STONE.get(),
+            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_STONE.get(), pos, state, 8),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
 
     public static final RegistryObject<Block> PIPE_GOLD = registerPipe("pipe_gold",
             () -> BCBlockEntities.PIPE_GOLD.get(),
-            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4));
+            (pos, state) -> new TilePipe(BCBlockEntities.PIPE_GOLD.get(), pos, state, 4),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ITEM_HANDLER, "item");
 
-    public static final RegistryObject<Block> PIPE_WOOD = registerPipe("pipe_wood",
-            () -> BCBlockEntities.PIPE_WOOD.get(), TilePipeWood::new);
+    // Fluid pipes.
+    public static final RegistryObject<Block> PIPE_FLUID_WOOD = registerPipe("pipe_fluid_wood",
+            () -> BCBlockEntities.PIPE_FLUID_WOOD.get(), TileFluidPipeWood::new,
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.FLUID_HANDLER, "fluid");
 
-    private static <T extends TilePipe> RegistryObject<Block> registerPipe(String name,
+    public static final RegistryObject<Block> PIPE_FLUID_COBBLESTONE = registerPipe("pipe_fluid_cobblestone",
+            () -> BCBlockEntities.PIPE_FLUID_COBBLESTONE.get(),
+            (pos, state) -> new TileFluidPipe(BCBlockEntities.PIPE_FLUID_COBBLESTONE.get(), pos, state),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.FLUID_HANDLER, "fluid");
+
+    // Power (kinesis) pipes.
+    public static final RegistryObject<Block> PIPE_POWER_WOOD = registerPipe("pipe_power_wood",
+            () -> BCBlockEntities.PIPE_POWER_WOOD.get(),
+            (pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_WOOD.get(), pos, state),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ENERGY, "power");
+
+    public static final RegistryObject<Block> PIPE_POWER_COBBLESTONE = registerPipe("pipe_power_cobblestone",
+            () -> BCBlockEntities.PIPE_POWER_COBBLESTONE.get(),
+            (pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_COBBLESTONE.get(), pos, state),
+            () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ENERGY, "power");
+
+    private static <T extends net.minecraft.world.level.block.entity.BlockEntity> RegistryObject<Block> registerPipe(
+            String name,
             Supplier<net.minecraft.world.level.block.entity.BlockEntityType<T>> type,
-            BiFunction<BlockPos, net.minecraft.world.level.block.state.BlockState, T> factory) {
+            BiFunction<BlockPos, net.minecraft.world.level.block.state.BlockState, T> factory,
+            Supplier<net.minecraftforge.common.capabilities.Capability<?>> connectCap, String kind) {
         RegistryObject<Block> block = BLOCKS.register(name, () -> new BlockPipe<>(
                 BlockBehaviour.Properties.of().strength(0.3F).sound(SoundType.STONE).noOcclusion(),
-                type, factory));
+                type, factory, connectCap, kind));
         BCItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
         return block;
     }
