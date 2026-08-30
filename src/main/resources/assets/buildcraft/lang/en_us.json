@@ -58,6 +58,16 @@
     "block.buildcraft.robot_station": "Robot Station",
     "block.buildcraft.zone_planner": "Zone Planner",
 
+    "block.buildcraft.gate": "Gate",
+    "message.buildcraft.gate.trigger": "Trigger: %s",
+    "trigger.buildcraft.items_present": "Items present",
+    "trigger.buildcraft.items_full": "Inventory full",
+    "trigger.buildcraft.fluid_present": "Fluid present",
+    "trigger.buildcraft.fluid_full": "Tank full",
+    "trigger.buildcraft.energy_present": "Energy present",
+    "trigger.buildcraft.energy_full": "Energy full",
+    "trigger.buildcraft.always": "Always on",
+
     "message.buildcraft.tank.empty": "Tank is empty",
     "message.buildcraft.tank.contents": "%s / %s mB of %s",
     "message.buildcraft.quarry.status": "Quarry running - %s / %s FE",

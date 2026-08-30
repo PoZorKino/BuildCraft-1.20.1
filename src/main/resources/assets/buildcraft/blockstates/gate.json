@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "powered=false": {
+            "model": "buildcraft:block/gate"
+        },
+        "powered=true": {
+            "model": "buildcraft:block/gate"
+        }
+    }
+}

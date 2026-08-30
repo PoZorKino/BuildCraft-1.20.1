@@ -60,6 +60,7 @@ public final class BCCreativeTabs {
                 output.accept(BCBlocks.PIPE_FLUID_COBBLESTONE.get());
                 output.accept(BCBlocks.PIPE_POWER_WOOD.get());
                 output.accept(BCBlocks.PIPE_POWER_COBBLESTONE.get());
+                output.accept(BCBlocks.GATE.get());
                 output.accept(BCBlocks.ASSEMBLY_TABLE.get());
                 output.accept(BCBlocks.LASER.get());
                 output.accept(BCBlocks.ARCHITECT.get());

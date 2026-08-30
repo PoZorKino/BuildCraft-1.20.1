@@ -45,6 +45,7 @@ import buildcraft.factory.tile.TileRefinery;
 import buildcraft.factory.tile.TileTank;
 import buildcraft.robotics.block.BlockRobotStation;
 import buildcraft.robotics.tile.TileRobotStation;
+import buildcraft.transport.block.BlockGate;
 import buildcraft.transport.block.BlockPipe;
 import buildcraft.transport.tile.TileFluidPipe;
 import buildcraft.transport.tile.TileFluidPipeWood;
@@ -171,6 +172,9 @@ public final class BCBlocks {
             () -> BCBlockEntities.PIPE_POWER_COBBLESTONE.get(),
             (pos, state) -> new TilePowerPipe(BCBlockEntities.PIPE_POWER_COBBLESTONE.get(), pos, state),
             () -> net.minecraftforge.common.capabilities.ForgeCapabilities.ENERGY, "power");
+
+    public static final RegistryObject<Block> GATE = register("gate", () -> new BlockGate(
+            BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(1.0F).sound(SoundType.METAL)));
 
     private static <T extends net.minecraft.world.level.block.entity.BlockEntity> RegistryObject<Block> registerPipe(
             String name,
